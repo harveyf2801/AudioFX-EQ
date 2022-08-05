@@ -4,7 +4,8 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               companyName="HarveyFretwell" companyEmail="hfretwell@icloud.com"
               pluginName="EQ" pluginDesc="Equaliser" pluginManufacturer="HarveyFretwell"
-              pluginVST3Category="EQ,Filter,Fx" pluginAAXCategory="1,8192">
+              pluginVST3Category="EQ,Filter,Fx" pluginAAXCategory="1,8192"
+              cppLanguageStandard="17">
   <MAINGROUP id="DrbIMG" name="EQ">
     <GROUP id="{B94BEFDD-E918-463D-B632-9169F4208711}" name="Source">
       <FILE id="IsnXjr" name="PluginProcessor.cpp" compile="1" resource="0"
