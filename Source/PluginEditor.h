@@ -33,5 +33,11 @@ private:
     // access the processor object that created it.
     EQAudioProcessor& audioProcessor;
 
+    // Initialising the GUI objects
+    juce::Slider lowCutFreq;
+    juce::Slider lowCutFreq;
+    juce::Slider lowCutFreq;
+    juce::Slider lowCutFreq;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EQAudioProcessorEditor)
 };

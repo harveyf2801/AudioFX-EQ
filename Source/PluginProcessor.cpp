@@ -192,6 +192,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::createPara
     // Creating a parameter layout
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
+    // Adding the parameters to the layout...
+    
     // (Parameter ID, Parameter Name) (Min, Max, Increment, Skew, Default)
     layout.add(std::make_unique<juce::AudioParameterFloat>("LowCutFreq",
                                                             "LowCut Freq",
@@ -225,8 +227,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::createPara
                                         1.f),
                                         0.0f));
 
-    layout.add(std::make_unique<juce::AudioParameterFloat>("PeakQuality",
-                                                            "Peak Quality",
+    layout.add(std::make_unique<juce::AudioParameterFloat>("PeakQ",
+                                                            "Peak Q",
         juce::NormalisableRange<float>(0.1f,
                                         10.f,
                                         0.5f,
@@ -249,7 +251,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::createPara
                                                             0));
 
     layout.add(std::make_unique<juce::AudioParameterChoice>("HighCutSlope",
-                                                            "HeighCut Slope",
+                                                            "HighCut Slope",
                                                             stringArray,
                                                             0));
 
