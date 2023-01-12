@@ -8,6 +8,20 @@
               cppLanguageStandard="17">
   <MAINGROUP id="DrbIMG" name="EQ">
     <GROUP id="{B94BEFDD-E918-463D-B632-9169F4208711}" name="Source">
+      <GROUP id="{4F33ECA7-F1F6-1D5A-97F5-8BE143B625DB}" name="Audio">
+        <FILE id="OcOFoa" name="EQProcessor.cpp" compile="1" resource="0" file="Source/EQProcessor.cpp"/>
+        <FILE id="Pxhbc9" name="EQProcessor.h" compile="0" resource="0" file="Source/EQProcessor.h"/>
+      </GROUP>
+      <GROUP id="{9769A18C-53AA-30C9-0B3E-61827233E43D}" name="GUI">
+        <FILE id="uET2HS" name="LabelledChoiceSlider.cpp" compile="1" resource="0"
+              file="Source/LabelledChoiceSlider.cpp"/>
+        <FILE id="sh6EFg" name="LabelledChoiceSlider.h" compile="0" resource="0"
+              file="Source/LabelledChoiceSlider.h"/>
+        <FILE id="mUwbR2" name="LabelledSlider.cpp" compile="1" resource="0"
+              file="Source/LabelledSlider.cpp"/>
+        <FILE id="DWmkmH" name="LabelledSlider.h" compile="0" resource="0"
+              file="Source/LabelledSlider.h"/>
+      </GROUP>
       <FILE id="IsnXjr" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="UlMaAL" name="PluginProcessor.h" compile="0" resource="0"
@@ -25,19 +39,19 @@
         <CONFIGURATION isDebug="0" name="Release" targetName="EQ"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_audio_basics" path="../../../../Program Files/juce-7.0.1-windows/JUCE/modules"/>
-        <MODULEPATH id="juce_audio_devices" path="../../../../Program Files/juce-7.0.1-windows/JUCE/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../../../../Program Files/juce-7.0.1-windows/JUCE/modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../../../../Program Files/juce-7.0.1-windows/JUCE/modules"/>
-        <MODULEPATH id="juce_audio_processors" path="../../../../Program Files/juce-7.0.1-windows/JUCE/modules"/>
-        <MODULEPATH id="juce_audio_utils" path="../../../../Program Files/juce-7.0.1-windows/JUCE/modules"/>
-        <MODULEPATH id="juce_core" path="../../../../Program Files/juce-7.0.1-windows/JUCE/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../../../../Program Files/juce-7.0.1-windows/JUCE/modules"/>
-        <MODULEPATH id="juce_events" path="../../../../Program Files/juce-7.0.1-windows/JUCE/modules"/>
-        <MODULEPATH id="juce_graphics" path="../../../../Program Files/juce-7.0.1-windows/JUCE/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../../../../Program Files/juce-7.0.1-windows/JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../../../../Program Files/juce-7.0.1-windows/JUCE/modules"/>
-        <MODULEPATH id="juce_dsp" path="../../../../Program Files/juce-7.0.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="..\..\..\..\Program Files\juce-7.0.3-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="..\..\..\..\Program Files\juce-7.0.3-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="..\..\..\..\Program Files\juce-7.0.3-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="..\..\..\..\Program Files\juce-7.0.3-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="..\..\..\..\Program Files\juce-7.0.3-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="..\..\..\..\Program Files\juce-7.0.3-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="..\..\..\..\Program Files\juce-7.0.3-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="..\..\..\..\Program Files\juce-7.0.3-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="..\..\..\..\Program Files\juce-7.0.3-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="..\..\..\..\Program Files\juce-7.0.3-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="..\..\..\..\Program Files\juce-7.0.3-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="..\..\..\..\Program Files\juce-7.0.3-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="..\..\..\..\Program Files\juce-7.0.3-windows/JUCE/modules"/>
       </MODULEPATHS>
     </VS2022>
   </EXPORTFORMATS>

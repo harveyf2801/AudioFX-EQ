@@ -15,10 +15,12 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
+#include "LabelledSlider.h"
+
 //==============================================================================
 /**
 */
-class EQAudioProcessorEditor  : public juce::AudioProcessorEditor
+class EQAudioProcessorEditor : public juce::AudioProcessorEditor
 {
 public:
     EQAudioProcessorEditor (EQAudioProcessor&);
@@ -31,13 +33,10 @@ public:
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
-    EQAudioProcessor& audioProcessor;
+    EQAudioProcessor& _audioProcessor;
 
-    // Initialising the GUI objects
-    juce::Slider lowCutFreq;
-    juce::Slider lowCutFreq;
-    juce::Slider lowCutFreq;
-    juce::Slider lowCutFreq;
-
+    std::vector<LabelledSlider> _cutSliders;
+    std::vector<LabelledSlider, juce::MultiChoicePropertyComponent> _peakSliders;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EQAudioProcessorEditor)
 };
