@@ -50,38 +50,18 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParame
 
         layout.add(std::make_unique<juce::AudioParameterFloat>(bandId + "freq",
             bandName + "Frequency",
-            juce::NormalisableRange<float>(20.f,
-                20000.f,
-                1.f,
-                1.f),
+            juce::NormalisableRange<float>(20.f, 20000.f, 1.f, 1.f),
             defaultFreq * i));
 
         layout.add(std::make_unique<juce::AudioParameterFloat>(bandId + "gain",
             bandName + "Gain",
-            juce::NormalisableRange<float>(-24.f,
-                24.f,
-                0.5f,
-                1.f),
+            juce::NormalisableRange<float>(-24.f, 24.f, 0.5f, 1.f),
             0.0f));
 
         layout.add(std::make_unique<juce::AudioParameterFloat>(bandId + "q",
             bandName + "Q",
-            juce::NormalisableRange<float>(0.1f,
-                10.f,
-                0.5f,
-                1.f),
+            juce::NormalisableRange<float>(0.1f, 10.f, 0.5f, 1.f),
             1.0f));
-    }
-
-    // need to change to style like a slider
-
-    juce::StringArray slopeArray;
-    for (auto i = 0; i < 4; ++i)
-    {
-        juce::String str;
-        str << (12 + i * 12);
-        str << "db/Oct";
-        slopeArray.add(str);
     }
 
     for (juce::String i : { "Low", "High" })
@@ -94,16 +74,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParame
 
         layout.add(std::make_unique<juce::AudioParameterFloat>(bandId + "freq",
             bandName + "Frequency",
-            juce::NormalisableRange<float>(20.f,
-                20000.f,
-                1.f,
-                1.f),
+            juce::NormalisableRange<float>(20.f, 20000.f, 1.f, 1.f),
             20.f));
 
-        layout.add(std::make_unique<juce::AudioParameterChoice>(bandId + "slope",
-            bandName + "Slope",
-            slopeArray,
-            0));
+        layout.add(std::make_unique<juce::AudioParameterInt>(bandId + "slope",
+            bandName + "Slope", 0, 3, 0));
     }
 
     return layout;

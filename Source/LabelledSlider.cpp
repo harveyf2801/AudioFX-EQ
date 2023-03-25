@@ -18,12 +18,12 @@ LabelledSlider::LabelledSlider (juce::AudioProcessorValueTreeState& stateToUse, 
 
     _label.setText(stateToUse.getParameter(parameterID)->getLabel(), juce::dontSendNotification);
 
-    setRange(-128, 0, 0);
     setSliderStyle(juce::Slider::RotaryVerticalDrag);
-    setTextBoxStyle(juce::Slider::NoTextBox, false, 80, 20);
+    setTextBoxStyle(juce::Slider::TextBoxBelow, false, 80, 20);
     setSliderSnapsToMousePosition(false);
     setColour(trackColourId, juce::Colour(0xffc5c6ca));
 
+    addAndMakeVisible(_label);
 }
 
 LabelledSlider::~LabelledSlider()

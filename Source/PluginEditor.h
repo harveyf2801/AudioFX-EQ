@@ -15,7 +15,8 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
-#include "LabelledSlider.h"
+#include "CutBandParameters.h"
+#include "PeakBandParameters.h"
 
 //==============================================================================
 /**
@@ -35,8 +36,10 @@ private:
     // access the processor object that created it.
     EQAudioProcessor& _audioProcessor;
 
-    std::vector<LabelledSlider> _cutSliders;
-    std::vector<LabelledSlider, juce::MultiChoicePropertyComponent> _peakSliders;
+    CutBandParameters _lowCutParams;
+    CutBandParameters _highCutParams;
+
+    juce::OwnedArray<PeakBandParameters> _peakBands;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EQAudioProcessorEditor)
 };
