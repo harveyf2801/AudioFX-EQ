@@ -34,7 +34,6 @@ LabelledChoiceSlider::~LabelledChoiceSlider()
 
 void LabelledChoiceSlider::valueChanged()
 {
-    DBG(juce::String(getChoiceValue()));
 }
 
 int LabelledChoiceSlider::getChoiceValue()

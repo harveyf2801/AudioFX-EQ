@@ -13,22 +13,30 @@
         <FILE id="Pxhbc9" name="EQProcessor.h" compile="0" resource="0" file="Source/EQProcessor.h"/>
       </GROUP>
       <GROUP id="{9769A18C-53AA-30C9-0B3E-61827233E43D}" name="GUI">
-        <FILE id="iFv6JW" name="CutBandParameters.cpp" compile="1" resource="0"
-              file="Source/CutBandParameters.cpp"/>
-        <FILE id="RMj3cn" name="CutBandParameters.h" compile="0" resource="0"
-              file="Source/CutBandParameters.h"/>
-        <FILE id="uET2HS" name="LabelledChoiceSlider.cpp" compile="1" resource="0"
-              file="Source/LabelledChoiceSlider.cpp"/>
-        <FILE id="sh6EFg" name="LabelledChoiceSlider.h" compile="0" resource="0"
-              file="Source/LabelledChoiceSlider.h"/>
-        <FILE id="mUwbR2" name="LabelledSlider.cpp" compile="1" resource="0"
-              file="Source/LabelledSlider.cpp"/>
-        <FILE id="DWmkmH" name="LabelledSlider.h" compile="0" resource="0"
-              file="Source/LabelledSlider.h"/>
-        <FILE id="KtZ2PH" name="PeakBandParameters.cpp" compile="1" resource="0"
-              file="Source/PeakBandParameters.cpp"/>
-        <FILE id="PO6LYB" name="PeakBandParameters.h" compile="0" resource="0"
-              file="Source/PeakBandParameters.h"/>
+        <GROUP id="{8BF1CD9E-B587-2258-CFFA-4C86DC1C0BC2}" name="EQComponents">
+          <FILE id="iFv6JW" name="CutBandParameters.cpp" compile="1" resource="0"
+                file="Source/CutBandParameters.cpp"/>
+          <FILE id="RMj3cn" name="CutBandParameters.h" compile="0" resource="0"
+                file="Source/CutBandParameters.h"/>
+          <FILE id="DhqPFd" name="GraphBackground.cpp" compile="1" resource="0"
+                file="Source/GraphBackground.cpp"/>
+          <FILE id="MM6EpT" name="GraphBackground.h" compile="0" resource="0"
+                file="Source/GraphBackground.h"/>
+          <FILE id="KtZ2PH" name="PeakBandParameters.cpp" compile="1" resource="0"
+                file="Source/PeakBandParameters.cpp"/>
+          <FILE id="PO6LYB" name="PeakBandParameters.h" compile="0" resource="0"
+                file="Source/PeakBandParameters.h"/>
+        </GROUP>
+        <GROUP id="{782802F9-D3CF-3CD6-A4F2-32552D0ADD46}" name="Components">
+          <FILE id="uET2HS" name="LabelledChoiceSlider.cpp" compile="1" resource="0"
+                file="Source/LabelledChoiceSlider.cpp"/>
+          <FILE id="sh6EFg" name="LabelledChoiceSlider.h" compile="0" resource="0"
+                file="Source/LabelledChoiceSlider.h"/>
+          <FILE id="mUwbR2" name="LabelledSlider.cpp" compile="1" resource="0"
+                file="Source/LabelledSlider.cpp"/>
+          <FILE id="DWmkmH" name="LabelledSlider.h" compile="0" resource="0"
+                file="Source/LabelledSlider.h"/>
+        </GROUP>
       </GROUP>
       <FILE id="IsnXjr" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

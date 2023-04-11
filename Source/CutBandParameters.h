@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include <JuceHeader.h>
+
 #include "LabelledSlider.h"
 #include "LabelledChoiceSlider.h"
 
