@@ -15,7 +15,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
-#include "GraphBackground.h"
+#include "Graph.h"
 #include "CutBandParameters.h"
 #include "PeakBandParameters.h"
 
@@ -37,12 +37,10 @@ private:
     // access the processor object that created it.
     EQAudioProcessor& _audioProcessor;
 
-    GraphBackground _graphBackground;
+    Graph _graph;
 
     CutBandParameters _lowCutParams;
     CutBandParameters _highCutParams;
-
-    juce::ShapeButton bbb;
 
     juce::OwnedArray<PeakBandParameters> _peakBands;
 
