@@ -10,7 +10,7 @@
 
 [Lock Free Queues (Pure C++ Implimentation)](https://jbseg.medium.com/lock-free-queues-e48de693654b)
 
-[Boost Single-writer/Single-reader FIFO Queue](single-writer/single-reader fifo queue)
+[Boost Single-writer/Single-reader FIFO Queue](https://www.boost.org/doc/libs/1_53_0/doc/html/boost/lockfree/spsc_queue.html)
 
 ### GUI
 [Spectrum Analyser JUCE Tutorial](https://docs.juce.com/master/tutorial_spectrum_analyser.html)
