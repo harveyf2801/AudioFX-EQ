@@ -7,7 +7,7 @@
 EQAudioProcessorEditor::EQAudioProcessorEditor (EQAudioProcessor& p)
     : AudioProcessorEditor (&p)
     , _audioProcessor (p)
-    , _graph (
+    , _SpectralAnalyser (
         { 20.f, 40.f, 100.f, 200.f, 400.f, 600.f, 1000.f, 2000.f, 4000.f, 6000.f, 10000.f, 20000.f },
         { -30, -25, -20, -15, -10, -5, 0, 5, 10, 20 }
     )
@@ -30,10 +30,10 @@ EQAudioProcessorEditor::EQAudioProcessorEditor (EQAudioProcessor& p)
     //addAndMakeVisible(_lowCutParams);
     //addAndMakeVisible(_highCutParams);
 
-    addAndMakeVisible (_graph);
+    addAndMakeVisible (_SpectralAnalyser);
 
     const juce::Displays::Display* screen = juce::Desktop::getInstance().getDisplays().getPrimaryDisplay();
-    bounds = (screen != nullptr) ? screen->userArea : juce::Rectangle<int>(0, 0, 1000, 1000);
+    auto bounds = (screen != nullptr) ? screen->userArea : juce::Rectangle<int>(0, 0, 1000, 1000);
 
     setSize(static_cast<int>(bounds.getWidth() / 2), static_cast<int>(bounds.getHeight() / 2));
 
@@ -61,7 +61,7 @@ void EQAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 
-    auto bounds = getLocalBounds();
+    auto bounds = getLocalBounds().reduced(100, 100);
 
     juce::FlexBox flexContainer (
         juce::FlexBox::Direction::column,
@@ -72,7 +72,7 @@ void EQAudioProcessorEditor::resized()
     );
 
     flexContainer.items.add(
-        juce::FlexItem (_graph).withFlex (0.8)
+        juce::FlexItem (_SpectralAnalyser).withFlex (0.8f)
     );
 
     flexContainer.performLayout(bounds.toFloat());

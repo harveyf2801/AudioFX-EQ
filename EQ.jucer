@@ -11,6 +11,11 @@
       <GROUP id="{4F33ECA7-F1F6-1D5A-97F5-8BE143B625DB}" name="Audio">
         <FILE id="OcOFoa" name="EQProcessor.cpp" compile="1" resource="0" file="Source/EQProcessor.cpp"/>
         <FILE id="Pxhbc9" name="EQProcessor.h" compile="0" resource="0" file="Source/EQProcessor.h"/>
+        <FILE id="H4NH2n" name="FFTProcessor.cpp" compile="1" resource="0"
+              file="Source/FFTProcessor.cpp"/>
+        <FILE id="LKJK1X" name="FFTProcessor.h" compile="0" resource="0" file="Source/FFTProcessor.h"/>
+        <FILE id="A6QYP6" name="FIFO.cpp" compile="1" resource="0" file="Source/FIFO.cpp"/>
+        <FILE id="pQuJMI" name="FIFO.h" compile="0" resource="0" file="Source/FIFO.h"/>
       </GROUP>
       <GROUP id="{9769A18C-53AA-30C9-0B3E-61827233E43D}" name="GUI">
         <GROUP id="{8BF1CD9E-B587-2258-CFFA-4C86DC1C0BC2}" name="EQComponents">
@@ -18,8 +23,10 @@
                 file="Source/CutBandParameters.cpp"/>
           <FILE id="RMj3cn" name="CutBandParameters.h" compile="0" resource="0"
                 file="Source/CutBandParameters.h"/>
-          <FILE id="DhqPFd" name="Graph.cpp" compile="1" resource="0" file="Source/Graph.cpp"/>
-          <FILE id="MM6EpT" name="Graph.h" compile="0" resource="0" file="Source/Graph.h"/>
+          <FILE id="DhqPFd" name="SpectralAnalyser.cpp" compile="1" resource="0"
+                file="Source/SpectralAnalyser.cpp"/>
+          <FILE id="MM6EpT" name="SpectralAnalyser.h" compile="0" resource="0"
+                file="Source/SpectralAnalyser.h"/>
           <FILE id="KtZ2PH" name="PeakBandParameters.cpp" compile="1" resource="0"
                 file="Source/PeakBandParameters.cpp"/>
           <FILE id="PO6LYB" name="PeakBandParameters.h" compile="0" resource="0"

@@ -44,7 +44,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParame
 
     for (auto i = 1; i <= peakingBands; ++i)
     {
-        float defaultFreq = (20000 - 20) / (peakingBands + 1);
+        float defaultFreq = (20000 - 20) / ((float)peakingBands + 1);
         juce::String bandName = "Peak " + juce::String(i) + " ";
         juce::String bandId = bandName.replaceCharacter(' ', '-').toLowerCase();
 
@@ -133,21 +133,21 @@ int EQAudioProcessor::getCurrentProgram()
     return 0;
 }
 
-void EQAudioProcessor::setCurrentProgram (int index)
+void EQAudioProcessor::setCurrentProgram (int /*index*/)
 {
 }
 
-const juce::String EQAudioProcessor::getProgramName (int index)
+const juce::String EQAudioProcessor::getProgramName (int /*index*/)
 {
     return {};
 }
 
-void EQAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void EQAudioProcessor::changeProgramName (int /*index*/, const juce::String& /*newName*/)
 {
 }
 
 //==============================================================================
-void EQAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void EQAudioProcessor::prepareToPlay (double /*sampleRate*/, int /*samplesPerBlock*/)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
@@ -185,7 +185,7 @@ bool EQAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 }
 #endif
 
-void EQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void EQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& /*midiMessages*/)
 {
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
@@ -226,14 +226,14 @@ juce::AudioProcessorEditor* EQAudioProcessor::createEditor()
 }
 
 //==============================================================================
-void EQAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void EQAudioProcessor::getStateInformation (juce::MemoryBlock& /*destData*/)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void EQAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void EQAudioProcessor::setStateInformation (const void* /*data*/, int /*sizeInBytes*/)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.

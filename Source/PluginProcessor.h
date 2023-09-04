@@ -8,11 +8,6 @@
     This file contains the basic framework code for a JUCE plugin processor.
 
   ==============================================================================
-
-  Helpers:
-  https://webaudio.github.io/Audio-EQ-Cookbook/audio-eq-cookbook.html
-
-  ==============================================================================
 */
 
 #pragma once

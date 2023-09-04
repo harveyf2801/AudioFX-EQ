@@ -15,7 +15,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
-#include "Graph.h"
+#include "SpectralAnalyser.h"
 #include "CutBandParameters.h"
 #include "PeakBandParameters.h"
 
@@ -37,14 +37,12 @@ private:
     // access the processor object that created it.
     EQAudioProcessor& _audioProcessor;
 
-    Graph _graph;
+    SpectralAnalyser _SpectralAnalyser;
 
     CutBandParameters _lowCutParams;
     CutBandParameters _highCutParams;
 
     juce::OwnedArray<PeakBandParameters> _peakBands;
-
-    juce::Rectangle<int> bounds;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EQAudioProcessorEditor)
 };
