@@ -12,8 +12,8 @@
 
 #include <JuceHeader.h>
 
-#include "LabelledSlider.h"
-#include "LabelledChoiceSlider.h"
+#include "GUI/components/LabelledSlider.h"
+#include "GUI/components/LabelledChoiceSlider.h"
 
 class PeakBandParameters : public juce::Component
 {

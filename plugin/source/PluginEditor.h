@@ -15,9 +15,9 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
-#include "SpectralAnalyser.h"
-#include "CutBandParameters.h"
-#include "PeakBandParameters.h"
+#include "GUI/EQComponents/SpectralAnalyser.h"
+#include "GUI/EQComponents/CutBandParameters.h"
+#include "GUI/EQComponents/PeakBandParameters.h"
 
 //==============================================================================
 /**

@@ -71,8 +71,8 @@ void SpectralAnalyser::drawBackground()
 
     // Horizontal lines
 
-    _colourGradient.point1 = juce::Point<float>(width / 2, top);
-    _colourGradient.point2 = juce::Point<float>(width / 2, bottom);
+    _colourGradient.point1 = juce::Point<float>(static_cast<float>(width / 2), static_cast<float>(top));
+    _colourGradient.point2 = juce::Point<float>(static_cast<float>(width / 2), static_cast<float>(bottom));
 
     for (auto i = 0; i < _freqs.size(); ++i)
     {
@@ -80,7 +80,7 @@ void SpectralAnalyser::drawBackground()
         auto x = _logFreqs[i];
 
         g.setGradientFill(_colourGradient);
-        g.drawVerticalLine(x, top, bottom);
+        g.drawVerticalLine(static_cast<int>(x), static_cast<float>(top), static_cast<float>(bottom));
 
         juce::String str = (freq > 999.f) ? juce::String(freq / 1000.f) + "k" : juce::String(freq);
         str << "Hz";
@@ -90,7 +90,7 @@ void SpectralAnalyser::drawBackground()
         juce::Rectangle<int> r;
 
         r.setSize(textWidth, fontHeight);
-        r.setCentre(x, 0);
+        r.setCentre(static_cast<int>(x), 0);
         r.setY(1);
 
         g.setColour(labelColourId);
@@ -101,8 +101,8 @@ void SpectralAnalyser::drawBackground()
 
     // Vertical lines
 
-    _colourGradient.point1 = juce::Point<float>(left, container.getCentreY());
-    _colourGradient.point2 = juce::Point<float>(right, container.getCentreY());
+    _colourGradient.point1 = juce::Point<float>(static_cast<float>(left), static_cast<float>(container.getCentreY()));
+    _colourGradient.point2 = juce::Point<float>(static_cast<float>(right), static_cast<float>(container.getCentreY()));
 
     for (auto i = 0; i < _gains.size(); ++i)
     {
@@ -116,14 +116,14 @@ void SpectralAnalyser::drawBackground()
         auto lineColour = (gain == 0.f) ? gain0LineColourId : gainLineColourId;
 
         g.setGradientFill(_colourGradient);
-        g.drawHorizontalLine(y, left, right);
+        g.drawHorizontalLine(static_cast<int>(y), static_cast<float>(left), static_cast<float>(right));
 
         g.setColour(gainLineColourId);
 
         juce::Rectangle<int> r;
         r.setSize(textWidth, fontHeight);
         r.setX(getWidth() - textWidth);
-        r.setCentre(r.getCentreX(), y);
+        r.setCentre(r.getCentreX(), static_cast<int>(y));
 
         g.drawFittedText(str, r, juce::Justification::centredLeft, 1);
 
@@ -147,8 +147,8 @@ void SpectralAnalyser::resized()
 {
     auto bounds = getLocalBounds();
 
-    updateXMap(bounds.getX(), bounds.getRight());
-    updateYMap(bounds.getY(), bounds.getBottom());
+    updateXMap(static_cast<float>(bounds.getX()), static_cast<float>(bounds.getRight()));
+    updateYMap(static_cast<float>(bounds.getY()), static_cast<float>(bounds.getBottom()));
 
     drawBackground();
 }

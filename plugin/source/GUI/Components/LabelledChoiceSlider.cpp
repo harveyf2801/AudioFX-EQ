@@ -38,5 +38,5 @@ void LabelledChoiceSlider::valueChanged()
 
 int LabelledChoiceSlider::getChoiceValue()
 {
-    return _choices[getValue()];
+    return _choices[static_cast<int>(getValue())];
 }

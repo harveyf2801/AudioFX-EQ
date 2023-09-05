@@ -23,7 +23,7 @@ public:
     FFTProcessor ();
     ~FFTProcessor();
 
-    static const enum FFTOrder
+    const enum FFTOrder
     {
         order2048 = 11,
         order4096 = 12,
@@ -34,7 +34,7 @@ public:
     static constexpr auto fftSize = 1 << fftOrder; // 2 ** n;
     static const auto scopeSize = 512;
 
-    void process (juce::AudioBuffer<float>& buffer);
+    void process (juce::AudioBuffer<float>& /*buffer*/);
 
 private:
 

@@ -1,0 +1,39 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "intelliSenseMode": "${default}",
+            "includePath": [
+                "${workspaceFolder}\\build\\plugin\\EQ_artefacts\\JuceLibraryCode",
+                "${workspaceFolder}\\libs\\**",
+                "${workspaceFolder}\\plugin\\source\\**"
+            ],
+            "defines": [],
+            "forcedInclude": [
+                "${workspaceFolder}/build/plugin/EQ_artefacts/JuceLibraryCode/JuceHeader.h"
+            ],
+            "compilerPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/bin/Hostx64/x64/cl.exe",
+            "cStandard": "c23",
+            "cppStandard": "c++23",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        },
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/build/EQ_artefacts/JuceLibraryCode/**",
+                "${workspaceFolder}/libs/**",
+                "${workspaceFolder}/plugin/source/**"
+            ],
+            "cStandard": "c23",
+            "cppStandard": "c++23",
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}

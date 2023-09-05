@@ -20,7 +20,7 @@ FFTProcessor::~FFTProcessor()
 
 }
 
-void FFTProcessor::process (juce::AudioBuffer<float>& buffer)
+void FFTProcessor::process (juce::AudioBuffer<float>& /*buffer*/)
 {
 
 }
