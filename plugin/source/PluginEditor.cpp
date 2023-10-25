@@ -24,11 +24,11 @@ EQAudioProcessorEditor::EQAudioProcessorEditor (EQAudioProcessor& p)
 
         _peakBands.add(peakBand);
 
-        //addAndMakeVisible(peakBand);
+        addAndMakeVisible(peakBand);
     }
 
-    //addAndMakeVisible(_lowCutParams);
-    //addAndMakeVisible(_highCutParams);
+    addAndMakeVisible(_lowCutParams);
+    addAndMakeVisible(_highCutParams);
 
     addAndMakeVisible (_SpectralAnalyser);
 
@@ -61,9 +61,9 @@ void EQAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 
-    auto bounds = getLocalBounds().reduced(100, 100);
+    auto bounds = getLocalBounds();
 
-    juce::FlexBox flexContainer (
+    juce::FlexBox spectralFlexContainer (
         juce::FlexBox::Direction::column,
         juce::FlexBox::Wrap::noWrap,
         juce::FlexBox::AlignContent::stretch,
@@ -71,21 +71,38 @@ void EQAudioProcessorEditor::resized()
         juce::FlexBox::JustifyContent::center
     );
 
-    flexContainer.items.add(
-        juce::FlexItem (_SpectralAnalyser).withFlex (0.8f)
+    spectralFlexContainer.items.add(
+        juce::FlexItem (_SpectralAnalyser).withFlex (0.8f, 0.8f)
     );
 
-    flexContainer.performLayout(bounds.toFloat());
+    auto analyserbounds = bounds.removeFromTop(static_cast<int>(bounds.getHeight()/2.f)).toFloat();
+    spectralFlexContainer.performLayout(analyserbounds);
 
+    // -----------------------
 
-    //auto width = bounds.getWidth() / (2 + EQAudioProcessor::peakingBands);
+    juce::FlexBox paramFlexContainer (
+        juce::FlexBox::Direction::row,
+        juce::FlexBox::Wrap::noWrap,
+        juce::FlexBox::AlignContent::stretch,
+        juce::FlexBox::AlignItems::stretch,
+        juce::FlexBox::JustifyContent::center
+    );
 
-    //_lowCutParams.setBounds (bounds.removeFromLeft(width));
+    paramFlexContainer.items.add(
+        juce::FlexItem (_lowCutParams).withFlex (0.8f)
+    );
 
-    //for (PeakBandParameters* peakBand : _peakBands)
-    //{
-    //    peakBand->setBounds(bounds.removeFromLeft(width));
-    //}
+    for (PeakBandParameters* peakBand : _peakBands)
+    {
+        paramFlexContainer.items.add(
+            juce::FlexItem (*peakBand).withFlex (0.8f)
+        );
+    }
 
-    //_highCutParams.setBounds(bounds.removeFromLeft(width));
+    paramFlexContainer.items.add(
+        juce::FlexItem (_highCutParams).withFlex (0.8f)
+    );
+    
+
+    paramFlexContainer.performLayout(bounds);
 }

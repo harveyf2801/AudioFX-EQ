@@ -8,7 +8,7 @@
         {
             "label": "Configure",
             "type":"shell",
-            "group": "build",
+            "group": "none",
             "presentation": {
                 "echo": true,
                 "reveal": "always",
@@ -95,7 +95,7 @@
         {
             "label": "Build: EQ",
             "type":"shell",
-            "group": "build",
+            "group": "none",
             "presentation": {
                 "echo": true,
                 "reveal": "always",
@@ -110,9 +110,7 @@
                     "--build",
                     ".",
                     "-j",
-                    "12",
-                    "--target",
-                    "EQ"
+                    "12"
                 ],
                 "problemMatcher": "$msCompile"
             },
