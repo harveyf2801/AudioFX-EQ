@@ -13,7 +13,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "Processing/EQProcessor.h"
+#include "EQProcessor.h"
 
 //==============================================================================
 /**

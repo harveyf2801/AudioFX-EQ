@@ -9,7 +9,7 @@
         {
             "name": "Launch Standalone Plugin (debug)",
             "type": "cppdbg",
-            "program": "${workspaceRoot}/build/plugin/EQ_artefacts/Debug/Standalone/EQ.exe",
+            "program": "${workspaceRoot}/build/Source/EQ_artefacts/Debug/Standalone/EQ.exe",
 
             "request": "launch",
             "stopAtEntry": false,
@@ -19,14 +19,14 @@
             "osx": {
                 "MIMode": "lldb",
                 "externalConsole": false,
-                "program": "${workspaceRoot}/build/plugin/EQ_artefacts/Debug/Standalone/EQ.app/Contents/MacOS/EQ",
+                "program": "${workspaceRoot}/build/Source/EQ_artefacts/Debug/Standalone/EQ.app/Contents/MacOS/EQ",
             },
 
             "windows": {
                 "type": "cppvsdbg",
                 "console": "internalConsole",
                 "internalConsoleOptions": "openOnSessionStart",
-                "program": "${workspaceRoot}/build/plugin/EQ_artefacts/Debug/Standalone/EQ.exe"
+                "program": "${workspaceRoot}/build/Source/EQ_artefacts/Debug/Standalone/EQ.exe"
             }
         }
     ]
