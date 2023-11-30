@@ -15,7 +15,7 @@
 
 //==============================================================================
 
-// Initialising the peaking bands availible
+// Initialising the peaking bands availible in our plugin
 int EQAudioProcessor::peakingBands = 3;
 
 EQAudioProcessor::EQAudioProcessor()
@@ -29,7 +29,12 @@ EQAudioProcessor::EQAudioProcessor()
                      #endif
                        )
 #endif
-     , apvts (*this, nullptr, "Parameters", initParameterLayout())
+
+    // Pass in the constructor parameters for the audio processor value tree state.
+    // Here the audio processor is passed in by reference, an undo manager is provided as a reference,
+    // we provide an ID of "Parameters" and then dynamically create our parameter
+    // layout by calling the custom initParameterLayout method.
+     , apvts (*this, &undoManager, "Parameters", initParameterLayout())
 {
 }
 
@@ -39,41 +44,63 @@ EQAudioProcessor::~EQAudioProcessor()
 
 juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParameterLayout()
 {
-    // Creating a parameter layout
+    // Creating a parameter layout so that we can add parameters to the plugin
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
+    // Iterating through the amount of peaking bands we specified above
     for (auto i = 1; i <= peakingBands; ++i)
     {
+        // Defining the default frequency parameter value for each band, equally spaced
         float defaultFreq = (20000 - 20) / ((float)peakingBands + 1);
+        
+        // Defining the band name and ID for each peaking band in the format "peak-{peak number}-{parameter type}"
         juce::String bandName = "Peak " + juce::String(i) + " ";
         juce::String bandId = bandName.replaceCharacter(' ', '-').toLowerCase();
-
+        
+        // * For each Audio Parameter, we usually provide an:
+        //      - ID (to link parameters to functions)
+        //      - Name (visible to users)
+        //      - Range / min + max
+        //      - Default value
+        // * Parameter ID provides the param ID and a version hint (for AU plugins)
+        // * Normalisable Range provides a min, max, and interval value
+        
+        // Adding the frequency parameter for each peak (in Hz)
         layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "freq", 1),
             bandName + "Frequency",
             juce::NormalisableRange<float>(20.f, 20000.f, 1.f, 1.f),
             defaultFreq * i));
-
+        
+        // Adding the gain parameter for each peak (in dB)
         layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "gain", 1),
             bandName + "Gain",
             juce::NormalisableRange<float>(-24.f, 24.f, 0.5f, 1.f),
             0.0f));
-
+        
+        // Adding the q parameter for each peak (in q width)
         layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "q", 1),
             bandName + "Q",
             juce::NormalisableRange<float>(0.1f, 10.f, 0.5f, 1.f),
             1.0f));
     }
-
-    for (juce::String i : { "Low", "High" })
+    
+    // Defining the names for the cut bands
+    auto cutNames = juce::Array<juce::String>("Low", "High");
+    
+    // Iterating through the two cut bands
+    for (auto i = 0; i < 2; ++i)
     {
-        juce::String bandName = i + " Cut ";
+        // Defining the band name and ID for each cut band in the format "{cut type}-cut-{parameter type}"
+        juce::String bandName = cutNames[i] + " Cut ";
         juce::String bandId = bandName.replaceCharacter(' ', '-').toLowerCase();
-
+        
+        // Adding the frequency parameter for each cut band (in Hz)
         layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "freq", 1),
             bandName + "Frequency",
             juce::NormalisableRange<float>(20.f, 20000.f, 1.f, 1.f),
-            20.f));
-
+            20.f * (i * 1000.f)));
+        
+        // Adding the slope parameter for each cut band (this goes up in dB/Octave)
         layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID(bandId + "slope", 1),
             bandName + "Slope", 0, 3, 0));
     }
@@ -82,6 +109,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParame
 }
 
 //==============================================================================
+
 const juce::String EQAudioProcessor::getName() const
 {
     return JucePlugin_Name;
@@ -144,6 +172,7 @@ void EQAudioProcessor::changeProgramName (int /*index*/, const juce::String& /*n
 }
 
 //==============================================================================
+
 void EQAudioProcessor::prepareToPlay (double /*sampleRate*/, int /*samplesPerBlock*/)
 {
     // Use this method as the place to do any pre-playback
@@ -184,7 +213,9 @@ bool EQAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 
 void EQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& /*midiMessages*/)
 {
+    // Removes high precision floating point values close to zero that may be computationally heavy
     juce::ScopedNoDenormals noDenormals;
+    
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
@@ -205,13 +236,19 @@ void EQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mid
     // interleaved by keeping the same state.
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        // auto* channelData = buffer.getWritePointer (channel);
+        auto* channelData = buffer.getWritePointer (channel);
         
-        // ..do something to the data...
+        for (auto i = 0; i < buffer.getNumChannels(); ++i)
+        {
+            auto sample = channelData[i];
+            
+            // ..do something to the data ...
+        }
     }
 }
 
 //==============================================================================
+
 bool EQAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
@@ -223,20 +260,33 @@ juce::AudioProcessorEditor* EQAudioProcessor::createEditor()
 }
 
 //==============================================================================
-void EQAudioProcessor::getStateInformation (juce::MemoryBlock& /*destData*/)
+
+void EQAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+    
+    // Store value state tree parameters as XML file ...
+    auto stateTree = apvts.copyState();
+    std::unique_ptr<juce::XmlElement> xml(stateTree.createXml());
+    copyXmlToBinary(*xml, destData);
 }
 
-void EQAudioProcessor::setStateInformation (const void* /*data*/, int /*sizeInBytes*/)
+void EQAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+    
+    // Load in previously saved parameters from XML file ...
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+    if (xmlState.get() != nullptr && xmlState->hasTagName(apvts.state.getType())) {
+        apvts.replaceState(juce::ValueTree::fromXml(*xmlState));
+    }
 }
 
 //==============================================================================
+
 // This creates new instances of the plugin.
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {

@@ -7,7 +7,7 @@
     "tasks": [
         {
             "label": "Configure",
-            "type":"shell",
+            "type": "shell",
             "group": "none",
             "presentation": {
                 "echo": true,
@@ -29,7 +29,7 @@
                     ".",
                     "-B",
                     "build"
-                ],
+                ]
             },
             "osx": {
                 "args": [
@@ -40,7 +40,7 @@
                     "-B",
                     "build",
                     "'-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64'"
-                ],
+                ]
             },
             "problemMatcher": []
         },
@@ -61,10 +61,10 @@
             },
             "command": "",
             "osx": {
-                "command": "xed",
+                "command": "xed"
             },
             "args": [
-                "./build/EQ.xcodeproj",
+                "./build/EQ.xcodeproj"
             ],
             "problemMatcher": []
         },
@@ -85,16 +85,16 @@
             },
             "command": "",
             "windows": {
-                "command": "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/devenv.exe",
+                "command": "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/devenv.exe"
             },
             "args": [
-                "./build/EQ.sln",
+                "./build/EQ.sln"
             ],
             "problemMatcher": []
         },
         {
             "label": "Build: EQ",
-            "type":"shell",
+            "type": "shell",
             "group": "none",
             "presentation": {
                 "echo": true,
@@ -116,11 +116,10 @@
             },
             "osx": {
                 "args": [
-                    "-G",
-                    "Xcode",
-                    "-B",
-                    "build",
-                    "'-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64'"
+                    "--build",
+                    ".",
+                    "-j",
+                    "8"
                 ],
                 "problemMatcher": {
                     "owner": "cpp",
@@ -134,10 +133,9 @@
                     }
                 }
             },
-
             "options": {
                 "cwd": "${workspaceRoot}/build"
-            },
+            }
         }
     ]
 }

@@ -16,7 +16,7 @@ PeakBandParameters::PeakBandParameters(juce::AudioProcessorValueTreeState& state
     , _qSlider(stateToUse, parameterID + "-q")
 {
     _freqSlider.setTextValueSuffix(" Hz");
-    _gainSlider.setTextValueSuffix(" gain");
+    _gainSlider.setTextValueSuffix(" dB");
 
     addAndMakeVisible(_freqSlider);
     addAndMakeVisible(_gainSlider);

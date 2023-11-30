@@ -1,5 +1,30 @@
 # AudioFX - EQ
 
+## Configure Project
+
+Configure for Windows
+```console
+cmake -G Visual Studio 17 2022 -S . -B build
+```
+
+Configure for MacOS
+```console
+cmake -G Xcode -S . -B build '-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64'
+```
+
+## Building Project
+
+Build for Windows
+```console
+cmake --build . -j 12
+```
+
+Build for MacOS
+```console
+cd build
+cmake --build . -j 8
+```
+
 ## Refferences
 
 [JUCE Docs](https://docs.juce.com/)

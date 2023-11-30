@@ -7,6 +7,8 @@ project(EQ)
 # Set the C++ standard
 set(CMAKE_CXX_STANDARD 23)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+
 # Setting the library directory
 set(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs)
 
