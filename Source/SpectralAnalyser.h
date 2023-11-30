@@ -16,7 +16,7 @@
 class SpectralAnalyser : public juce::Component
 {
 public:
-    SpectralAnalyser (const std::vector<float> &freqs, const std::vector<float>& gains);
+    SpectralAnalyser (const juce::Array<float>& freqs, const juce::Array<float>& gains);
     ~SpectralAnalyser () override;
 
     void updateXMap(float xmin, float xmax);
@@ -41,11 +41,11 @@ private:
 
     // ===========================
 
-    std::vector<float> _freqs;
-    std::vector<float> _gains;
+    juce::Array<float> _freqs;
+    juce::Array<float> _gains;
 
-    std::vector<float> _logFreqs;
-    std::vector<float> _logGains;
+    juce::Array<float> _logFreqs;
+    juce::Array<float> _logGains;
 
     float _minFreq;
     float _maxFreq;

@@ -11,15 +11,15 @@
 #include "SpectralAnalyser.h"
 
 
-SpectralAnalyser::SpectralAnalyser(const std::vector<float>& freqs, const std::vector<float>& gains)
+SpectralAnalyser::SpectralAnalyser(const juce::Array<float>& freqs, const juce::Array<float>& gains)
     : _freqs(freqs)
     , _gains(gains)
     , _logFreqs(freqs)
     , _logGains(gains)
-    , _minFreq(*std::ranges::min_element(_freqs))
-    , _maxFreq(*std::ranges::max_element(_freqs))
-    , _minGain(*std::ranges::min_element(_gains))
-    , _maxGain(*std::ranges::max_element(_gains))
+    , _minFreq(_freqs.getFirst())
+    , _maxFreq(_freqs.getLast())
+    , _minGain(_gains.getFirst())
+    , _maxGain(_gains.getLast())
     , _colourGradient()
 {
     _colourGradient.addColour(0, juce::Colours::transparentBlack);
@@ -37,7 +37,7 @@ void SpectralAnalyser::updateXMap(float xmin, float xmax)
     for (auto i = 0; i < _freqs.size(); ++i)
     {
         auto normX = juce::mapFromLog10(_freqs[i], _minFreq, _maxFreq);
-        _logFreqs[i] = xmin + xmax * normX;
+        _logFreqs.insert(i, xmin + xmax * normX);
     }
 }
 
@@ -45,7 +45,7 @@ void SpectralAnalyser::updateYMap(float ymin, float ymax)
 {
     for (auto i = 0; i < _gains.size(); ++i)
     {
-        _logGains[i] = juce::jmap(_gains[i], _minGain, _maxGain, ymin, ymax);
+        _logGains.insert(i, juce::jmap(_gains[i], _minGain, _maxGain, ymin, ymax));
     }
 }
 

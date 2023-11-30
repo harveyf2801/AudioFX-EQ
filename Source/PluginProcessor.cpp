@@ -48,17 +48,17 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParame
         juce::String bandName = "Peak " + juce::String(i) + " ";
         juce::String bandId = bandName.replaceCharacter(' ', '-').toLowerCase();
 
-        layout.add(std::make_unique<juce::AudioParameterFloat>(bandId + "freq",
+        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "freq", 1),
             bandName + "Frequency",
             juce::NormalisableRange<float>(20.f, 20000.f, 1.f, 1.f),
             defaultFreq * i));
 
-        layout.add(std::make_unique<juce::AudioParameterFloat>(bandId + "gain",
+        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "gain", 1),
             bandName + "Gain",
             juce::NormalisableRange<float>(-24.f, 24.f, 0.5f, 1.f),
             0.0f));
 
-        layout.add(std::make_unique<juce::AudioParameterFloat>(bandId + "q",
+        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "q", 1),
             bandName + "Q",
             juce::NormalisableRange<float>(0.1f, 10.f, 0.5f, 1.f),
             1.0f));
@@ -69,15 +69,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParame
         juce::String bandName = i + " Cut ";
         juce::String bandId = bandName.replaceCharacter(' ', '-').toLowerCase();
 
-        std::cout << "Band Name: " << bandName << std::endl;
-        std::cout << "BandId: " << bandId << std::endl;
-
-        layout.add(std::make_unique<juce::AudioParameterFloat>(bandId + "freq",
+        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "freq", 1),
             bandName + "Frequency",
             juce::NormalisableRange<float>(20.f, 20000.f, 1.f, 1.f),
             20.f));
 
-        layout.add(std::make_unique<juce::AudioParameterInt>(bandId + "slope",
+        layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID(bandId + "slope", 1),
             bandName + "Slope", 0, 3, 0));
     }
 
