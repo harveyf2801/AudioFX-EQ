@@ -38,5 +38,6 @@ cmake-build-debug
 # VsCode
 build/
 libs/
+JuceLibraryCode/
 
 .cache
