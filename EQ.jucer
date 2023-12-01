@@ -7,11 +7,7 @@
               pluginAAXCategory="1,8192" cppLanguageStandard="20" companyWebsite="https://harveyf2801.github.io/portfolio/"
               displaySplashScreen="1">
   <MAINGROUP id="DrbIMG" name="EQ">
-    <GROUP id="{2E0536A6-94C5-C686-BFF2-9133DD78C83E}" name="Resources">
-      <FILE id="NyveaD" name="SilverColour_Knob.knob" compile="0" resource="1"
-            file="../Downloads/SilverColour_Knob.knob"/>
-      <FILE id="B7IR8U" name="knobstrip.png" compile="0" resource="1" file="../Downloads/knobstrip.png"/>
-    </GROUP>
+    <GROUP id="{2E0536A6-94C5-C686-BFF2-9133DD78C83E}" name="Resources"/>
     <GROUP id="{B94BEFDD-E918-463D-B632-9169F4208711}" name="Source">
       <GROUP id="{82710EDF-1FD2-A2C8-A8B5-52BF4A1913F0}" name="LookAndFeel">
         <FILE id="F5osKG" name="CustomLookAndFeel.cpp" compile="1" resource="0"

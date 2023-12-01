@@ -39,5 +39,6 @@ cmake-build-debug
 build/
 libs/
 JuceLibraryCode/
+Builds/
 
 .cache
