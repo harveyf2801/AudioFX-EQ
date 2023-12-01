@@ -25,19 +25,25 @@
         <FILE id="pQuJMI" name="FIFO.h" compile="0" resource="0" file="Source/FIFO.h"/>
       </GROUP>
       <GROUP id="{9769A18C-53AA-30C9-0B3E-61827233E43D}" name="GUI">
-        <GROUP id="{8BF1CD9E-B587-2258-CFFA-4C86DC1C0BC2}" name="EQComponents">
-          <FILE id="iFv6JW" name="CutBandParameters.cpp" compile="1" resource="0"
-                file="Source/CutBandParameters.cpp"/>
-          <FILE id="RMj3cn" name="CutBandParameters.h" compile="0" resource="0"
-                file="Source/CutBandParameters.h"/>
-          <FILE id="DhqPFd" name="SpectralAnalyser.cpp" compile="1" resource="0"
-                file="Source/SpectralAnalyser.cpp"/>
-          <FILE id="MM6EpT" name="SpectralAnalyser.h" compile="0" resource="0"
-                file="Source/SpectralAnalyser.h"/>
+        <GROUP id="{879C559A-0ADA-750A-16C7-5DC2F5E843E5}" name="ParameterComponents">
           <FILE id="KtZ2PH" name="PeakBandParameters.cpp" compile="1" resource="0"
                 file="Source/PeakBandParameters.cpp"/>
           <FILE id="PO6LYB" name="PeakBandParameters.h" compile="0" resource="0"
                 file="Source/PeakBandParameters.h"/>
+          <FILE id="Ekp2tc" name="ShelfBandParameters.cpp" compile="1" resource="0"
+                file="Source/ShelfBandParameters.cpp"/>
+          <FILE id="M3QGkG" name="ShelfBandParameters.h" compile="0" resource="0"
+                file="Source/ShelfBandParameters.h"/>
+          <FILE id="iFv6JW" name="CutBandParameters.cpp" compile="1" resource="0"
+                file="Source/CutBandParameters.cpp"/>
+          <FILE id="RMj3cn" name="CutBandParameters.h" compile="0" resource="0"
+                file="Source/CutBandParameters.h"/>
+        </GROUP>
+        <GROUP id="{8BF1CD9E-B587-2258-CFFA-4C86DC1C0BC2}" name="EQComponents">
+          <FILE id="DhqPFd" name="GraphBackground.cpp" compile="1" resource="0"
+                file="Source/GraphBackground.cpp"/>
+          <FILE id="MM6EpT" name="GraphBackground.h" compile="0" resource="0"
+                file="Source/GraphBackground.h"/>
         </GROUP>
         <GROUP id="{782802F9-D3CF-3CD6-A4F2-32552D0ADD46}" name="Components">
           <FILE id="uET2HS" name="LabelledChoiceSlider.cpp" compile="1" resource="0"

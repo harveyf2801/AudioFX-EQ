@@ -9,6 +9,7 @@
 */
 
 #include "CustomLookAndFeel.h"
+#include "GraphBackground.h"
 
 //==============================================================================
 
@@ -33,6 +34,12 @@ CustomLookAndFeel::CustomLookAndFeel()
     setColour(juce::TextButton::buttonOnColourId, juce::Colours::black);
     setColour(juce::TextButton::textColourOffId, juce::Colours::lightgrey);
     setColour(juce::TextButton::textColourOnId, juce::Colours::white);
+    
+    setColour(GraphBackground::backgroundColourId, juce::Colour (16, 21, 24));
+    setColour(GraphBackground::freqLineColourId, juce::Colour (49, 54, 57));
+    setColour(GraphBackground::gainLineColourId, juce::Colour (41, 47, 47));
+    setColour(GraphBackground::gain0LineColourId, juce::Colour (141, 149, 152));
+    setColour(GraphBackground::labelColourId, juce::Colour (141, 149, 152));
 }
 
 CustomLookAndFeel::~CustomLookAndFeel()

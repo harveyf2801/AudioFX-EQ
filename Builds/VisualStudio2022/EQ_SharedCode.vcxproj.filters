@@ -2,14 +2,14 @@
 
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="EQ\Resources">
-      <UniqueIdentifier>{2311FD87-0C8F-BE4A-3A07-806C2AD284C5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="EQ\Source\LookAndFeel">
       <UniqueIdentifier>{76F1081B-BAB1-523E-6D0C-23B8828AE5BC}</UniqueIdentifier>
     </Filter>
     <Filter Include="EQ\Source\Audio">
       <UniqueIdentifier>{A84D645E-B355-3450-4BBF-D75BE2B79F5D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EQ\Source\GUI\ParameterComponents">
+      <UniqueIdentifier>{133C1E65-EDCA-934E-916C-C7EAB02C24FA}</UniqueIdentifier>
     </Filter>
     <Filter Include="EQ\Source\GUI\EQComponents">
       <UniqueIdentifier>{83B9DDF7-828F-2B87-1353-F4C02FF01168}</UniqueIdentifier>
@@ -649,13 +649,16 @@
     <ClCompile Include="..\..\Source\FIFO.cpp">
       <Filter>EQ\Source\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\CutBandParameters.cpp">
-      <Filter>EQ\Source\GUI\EQComponents</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\SpectralAnalyser.cpp">
-      <Filter>EQ\Source\GUI\EQComponents</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\PeakBandParameters.cpp">
+      <Filter>EQ\Source\GUI\ParameterComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShelfBandParameters.cpp">
+      <Filter>EQ\Source\GUI\ParameterComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CutBandParameters.cpp">
+      <Filter>EQ\Source\GUI\ParameterComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GraphBackground.cpp">
       <Filter>EQ\Source\GUI\EQComponents</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\LabelledChoiceSlider.cpp">
@@ -3166,9 +3169,6 @@
     <ClCompile Include="C:\JUCE\modules\juce_gui_extra\juce_gui_extra.mm">
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp">
-      <Filter>JUCE Library Code</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_basics.cpp">
       <Filter>JUCE Library Code</Filter>
     </ClCompile>
@@ -3228,13 +3228,16 @@
     <ClInclude Include="..\..\Source\FIFO.h">
       <Filter>EQ\Source\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\CutBandParameters.h">
-      <Filter>EQ\Source\GUI\EQComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\SpectralAnalyser.h">
-      <Filter>EQ\Source\GUI\EQComponents</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\PeakBandParameters.h">
+      <Filter>EQ\Source\GUI\ParameterComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShelfBandParameters.h">
+      <Filter>EQ\Source\GUI\ParameterComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CutBandParameters.h">
+      <Filter>EQ\Source\GUI\ParameterComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GraphBackground.h">
       <Filter>EQ\Source\GUI\EQComponents</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\LabelledChoiceSlider.h">
@@ -6237,9 +6240,6 @@
     <ClInclude Include="..\..\..\JUCE\modules\juce_gui_extra\juce_gui_extra.h">
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h">
-      <Filter>JUCE Library Code</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>JUCE Library Code</Filter>
     </ClInclude>
@@ -6248,12 +6248,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Downloads\SilverColour_Knob.knob">
-      <Filter>EQ\Resources</Filter>
-    </None>
-    <None Include="..\..\..\Downloads\knobstrip.png">
-      <Filter>EQ\Resources</Filter>
-    </None>
     <None Include="C:\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt">
       <Filter>JUCE Modules\juce_audio_devices\native\oboe</Filter>
     </None>
