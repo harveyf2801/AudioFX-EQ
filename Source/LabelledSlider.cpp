@@ -19,16 +19,15 @@ LabelledSlider::LabelledSlider (juce::AudioProcessorValueTreeState& stateToUse, 
     
     // Setting the text for the slider as the label
     // * Don't send notification means that a listener won't need to be be notified of any changes to this text as it will be static
-    _label.setText(stateToUse.getParameter(parameterID)->getLabel(), juce::dontSendNotification);
+    label.setText(stateToUse.getParameter(parameterID)->getLabel(), juce::dontSendNotification);
     
     // Setting the sliders styles
-    setSliderStyle(juce::Slider::RotaryVerticalDrag);
+    setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     setTextBoxStyle(juce::Slider::TextBoxBelow, false, 80, 20);
     setSliderSnapsToMousePosition(false);
-    setColour(trackColourId, juce::Colour(0xffc5c6ca));
     
     // Displays the slider's label component (only when the parent is displayed as well)
-    addAndMakeVisible(_label);
+    addAndMakeVisible(label);
 }
 
 LabelledSlider::~LabelledSlider()

@@ -27,10 +27,12 @@ public:
     ~LabelledChoiceSlider() override;
     
     //==============================================================================
-    
+
     // Returns the current choice value selected
-    int getChoiceValue();
-//    virtual void valueChanged();
+    double getChoiceValue();
+    
+    // Declaring the label attribute for the slider
+    juce::Label label;
 
 private:
     
@@ -38,15 +40,12 @@ private:
     
     //==============================================================================
     
-    // Declaring the array of integer choices
+    // Storing a copy of the parameter choices as a int array
     juce::Array<int> _choices;
-    
-    // Declaring the label attribute for the slider
-    juce::Label _label;
     
     // Declaring the slider attatchment attribute which links the parameter to the slider widget
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> _sliderAttachment;
-
+    
     //==============================================================================
     
     // SHOULD ALWAYS BE AT THE END OF THE JUCE CLASS

@@ -143,9 +143,10 @@
     <ClCompile Include="..\..\Source\EQProcessor.cpp"/>
     <ClCompile Include="..\..\Source\FFTProcessor.cpp"/>
     <ClCompile Include="..\..\Source\FIFO.cpp"/>
-    <ClCompile Include="..\..\Source\CutBandParameters.cpp"/>
-    <ClCompile Include="..\..\Source\SpectralAnalyser.cpp"/>
     <ClCompile Include="..\..\Source\PeakBandParameters.cpp"/>
+    <ClCompile Include="..\..\Source\ShelfBandParameters.cpp"/>
+    <ClCompile Include="..\..\Source\CutBandParameters.cpp"/>
+    <ClCompile Include="..\..\Source\GraphBackground.cpp"/>
     <ClCompile Include="..\..\Source\LabelledChoiceSlider.cpp"/>
     <ClCompile Include="..\..\Source\LabelledSlider.cpp"/>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
@@ -2526,9 +2527,10 @@
     <ClInclude Include="..\..\Source\EQProcessor.h"/>
     <ClInclude Include="..\..\Source\FFTProcessor.h"/>
     <ClInclude Include="..\..\Source\FIFO.h"/>
-    <ClInclude Include="..\..\Source\CutBandParameters.h"/>
-    <ClInclude Include="..\..\Source\SpectralAnalyser.h"/>
     <ClInclude Include="..\..\Source\PeakBandParameters.h"/>
+    <ClInclude Include="..\..\Source\ShelfBandParameters.h"/>
+    <ClInclude Include="..\..\Source\CutBandParameters.h"/>
+    <ClInclude Include="..\..\Source\GraphBackground.h"/>
     <ClInclude Include="..\..\Source\LabelledChoiceSlider.h"/>
     <ClInclude Include="..\..\Source\LabelledSlider.h"/>
     <ClInclude Include="..\..\Source\PluginProcessor.h"/>

@@ -10,19 +10,23 @@ EQAudioProcessorEditor::EQAudioProcessorEditor (EQAudioProcessor& p)
     , _audioProcessor (p)
 
     // Initialising the spectral analyser object with the frequency ticks and gain ticks to display on the graph
-    , _spectralAnalyser (
+    , _graphBackground (
         juce::Array<float>( 20.f, 40.f, 100.f, 200.f, 400.f, 600.f, 1000.f, 2000.f, 4000.f, 6000.f, 10000.f, 20000.f ),
         juce::Array<float>( -30, -25, -20, -15, -10, -5, 0, 5, 10, 20 )
     )
-    // Initialising the cut parameters, passing in a reference to the audio processor value tree state, and the ID for the parameter group
+    // Initialising the cut and shelf parameters, passing in a reference to the audio processor value tree state, and the ID for the parameter group
     , _lowCutParams (_audioProcessor.apvts, "low-cut")
     , _highCutParams (_audioProcessor.apvts, "high-cut")
+    , _lowShelfParams (_audioProcessor.apvts, "low-shelf")
+    , _highShelfParams (_audioProcessor.apvts, "high-shelf")
 {
     // Setting the custom look and feel
     setLookAndFeel (&_customLookAndFeel);
-
+    
+    //==============================================================================
+    
     // Creating all peaking band sliders and appending to the peak sliders array
-    for (auto i = 1; i <= EQAudioProcessor::peakingBands; ++i)
+    for (auto i = 1; i <= _audioProcessor.peakingBands; ++i)
     {
         juce::String id = "peak-" + juce::String(i);
 
@@ -34,12 +38,18 @@ EQAudioProcessorEditor::EQAudioProcessorEditor (EQAudioProcessor& p)
         addAndMakeVisible(peakBand);
     }
     
-    // Displaying the cut band parameters on the plugin
+    // Displaying the cut and shelf band parameters on the plugin
     addAndMakeVisible(_lowCutParams);
     addAndMakeVisible(_highCutParams);
-
+    addAndMakeVisible(_lowShelfParams);
+    addAndMakeVisible(_highShelfParams);
+    
+    //==============================================================================
+    
     // Displaying the spectral analyser
-    addAndMakeVisible (_spectralAnalyser);
+    addAndMakeVisible (_graphBackground);
+    
+    //==============================================================================
     
     // Finding the primary screen's dimentions and finding the user area (i.e. minus the top and bottom taskbar)
     const juce::Displays::Display* screen = juce::Desktop::getInstance().getDisplays().getPrimaryDisplay();
@@ -93,7 +103,8 @@ void EQAudioProcessorEditor::resized()
 
     // Adding each element to the parameter container
     paramFlexContainer.items.add(
-        juce::FlexItem (_lowCutParams).withFlex (0.8f)
+        juce::FlexItem (_lowCutParams).withFlex (0.8f),
+        juce::FlexItem (_lowShelfParams).withFlex (0.8f)
     );
     
     for (PeakBandParameters* peakBand : _peakBands)
@@ -104,10 +115,9 @@ void EQAudioProcessorEditor::resized()
     }
 
     paramFlexContainer.items.add(
+        juce::FlexItem (_highShelfParams).withFlex (0.8f),
         juce::FlexItem (_highCutParams).withFlex (0.8f)
     );
-    
-//    paramFlexContainer.performLayout(bounds);
     
     // -----------------------
     
@@ -124,9 +134,7 @@ void EQAudioProcessorEditor::resized()
     
     // Adding each element to the root container
     rootFlexContainer.items.add(
-        juce::FlexItem (_spectralAnalyser).withFlex (0.8f, 0.8f)
-    );
-    rootFlexContainer.items.add(
+        juce::FlexItem (_graphBackground).withFlex (0.8f, 0.8f),
         juce::FlexItem (paramFlexContainer).withFlex (0.8f, 0.8f)
     );
     

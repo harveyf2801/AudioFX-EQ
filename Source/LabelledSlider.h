@@ -24,15 +24,15 @@ public:
     // Constructor / Destructor methods
     LabelledSlider (juce::AudioProcessorValueTreeState& stateToUse, const juce::String parameterID);
     ~LabelledSlider() override;
+    
+    // Declaring the label attribute for the slider
+    juce::Label label;
 
 private:
     
     // Declaring all private methods and attributes
     
     //==============================================================================
-    
-    // Declaring the label attribute for the slider
-    juce::Label _label;
     
     // Declaring the slider attatchment attribute which links the parameter to the slider widget
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> _sliderAttachment;

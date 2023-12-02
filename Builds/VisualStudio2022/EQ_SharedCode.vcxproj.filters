@@ -8,6 +8,9 @@
     <Filter Include="EQ\Source\Audio">
       <UniqueIdentifier>{A84D645E-B355-3450-4BBF-D75BE2B79F5D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EQ\Source\GUI\ParameterComponents">
+      <UniqueIdentifier>{133C1E65-EDCA-934E-916C-C7EAB02C24FA}</UniqueIdentifier>
+    </Filter>
     <Filter Include="EQ\Source\GUI\EQComponents">
       <UniqueIdentifier>{83B9DDF7-828F-2B87-1353-F4C02FF01168}</UniqueIdentifier>
     </Filter>
@@ -646,13 +649,16 @@
     <ClCompile Include="..\..\Source\FIFO.cpp">
       <Filter>EQ\Source\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\CutBandParameters.cpp">
-      <Filter>EQ\Source\GUI\EQComponents</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\SpectralAnalyser.cpp">
-      <Filter>EQ\Source\GUI\EQComponents</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\PeakBandParameters.cpp">
+      <Filter>EQ\Source\GUI\ParameterComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShelfBandParameters.cpp">
+      <Filter>EQ\Source\GUI\ParameterComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CutBandParameters.cpp">
+      <Filter>EQ\Source\GUI\ParameterComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GraphBackground.cpp">
       <Filter>EQ\Source\GUI\EQComponents</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\LabelledChoiceSlider.cpp">
@@ -3222,13 +3228,16 @@
     <ClInclude Include="..\..\Source\FIFO.h">
       <Filter>EQ\Source\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\CutBandParameters.h">
-      <Filter>EQ\Source\GUI\EQComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\SpectralAnalyser.h">
-      <Filter>EQ\Source\GUI\EQComponents</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\PeakBandParameters.h">
+      <Filter>EQ\Source\GUI\ParameterComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShelfBandParameters.h">
+      <Filter>EQ\Source\GUI\ParameterComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CutBandParameters.h">
+      <Filter>EQ\Source\GUI\ParameterComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GraphBackground.h">
       <Filter>EQ\Source\GUI\EQComponents</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\LabelledChoiceSlider.h">

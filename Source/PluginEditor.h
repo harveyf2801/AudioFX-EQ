@@ -17,9 +17,10 @@
 
 #include "CustomLookAndFeel.h"
 
-#include "SpectralAnalyser.h"
+#include "GraphBackground.h"
 #include "CutBandParameters.h"
 #include "PeakBandParameters.h"
+#include "ShelfBandParameters.h"
 
 //==============================================================================
 
@@ -51,6 +52,7 @@ private:
     
     //==============================================================================
     
+    // Declaring a custom look and feel for the GUI
     CustomLookAndFeel _customLookAndFeel;
     
     // This reference is provided as a quick way for your editor to
@@ -58,11 +60,15 @@ private:
     EQAudioProcessor& _audioProcessor;
     
     // Declaring the spectral analyser for the plugin
-    SpectralAnalyser _spectralAnalyser;
+    GraphBackground _graphBackground;
     
     // Declaring the cut and peaking band parameter groups for the plugin
     CutBandParameters _lowCutParams;
     CutBandParameters _highCutParams;
+    
+    // Declaring the cut and peaking band parameter groups for the plugin
+    ShelfBandParameters _lowShelfParams;
+    ShelfBandParameters _highShelfParams;
 
     juce::OwnedArray<PeakBandParameters> _peakBands;
     
