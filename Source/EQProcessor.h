@@ -11,11 +11,20 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "LowCutBand.h"
+
+//==============================================================================
+
 
 class EQProcessor
 {
 public:
 
+    // Declaring all public methods and attributes
+
+    //==============================================================================
+
+    // Constructor / Destructor methods
     EQProcessor ();
     ~EQProcessor();
 
@@ -24,6 +33,7 @@ public:
     void updateFilter();
 
 private:
+    LowCutBand _lowCutFilter;
 
-    juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> _lowPassFilter;
+    juce::dsp::ProcessorChain<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> _processorChain;
 };

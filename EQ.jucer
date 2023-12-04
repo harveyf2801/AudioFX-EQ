@@ -16,6 +16,18 @@
               file="Source/CustomLookAndFeel.h"/>
       </GROUP>
       <GROUP id="{4F33ECA7-F1F6-1D5A-97F5-8BE143B625DB}" name="Audio">
+        <GROUP id="{88DFB638-FCB4-AAD5-3508-CB6B6625409D}" name="EQBands">
+          <FILE id="XGqv3a" name="AbstractFilterBand.cpp" compile="1" resource="0"
+                file="Source/AbstractFilterBand.cpp"/>
+          <FILE id="umksbQ" name="AbstractFilterBand.h" compile="0" resource="0"
+                file="Source/AbstractFilterBand.h"/>
+          <FILE id="HcajCd" name="PeakBand.cpp" compile="1" resource="0" file="Source/PeakBand.cpp"/>
+          <FILE id="cxWbWC" name="PeakBand.h" compile="0" resource="0" file="Source/PeakBand.h"/>
+          <FILE id="lwPQGR" name="HighCutBand.cpp" compile="1" resource="0" file="Source/HighCutBand.cpp"/>
+          <FILE id="oAwyqS" name="HighCutBand.h" compile="0" resource="0" file="Source/HighCutBand.h"/>
+          <FILE id="RSwFfE" name="LowCutBand.cpp" compile="1" resource="0" file="Source/LowCutBand.cpp"/>
+          <FILE id="j0dWFm" name="LowCutBand.h" compile="0" resource="0" file="Source/LowCutBand.h"/>
+        </GROUP>
         <FILE id="OcOFoa" name="EQProcessor.cpp" compile="1" resource="0" file="Source/EQProcessor.cpp"/>
         <FILE id="Pxhbc9" name="EQProcessor.h" compile="0" resource="0" file="Source/EQProcessor.h"/>
         <FILE id="H4NH2n" name="FFTProcessor.cpp" compile="1" resource="0"
@@ -23,8 +35,6 @@
         <FILE id="LKJK1X" name="FFTProcessor.h" compile="0" resource="0" file="Source/FFTProcessor.h"/>
         <FILE id="A6QYP6" name="FIFO.cpp" compile="1" resource="0" file="Source/FIFO.cpp"/>
         <FILE id="pQuJMI" name="FIFO.h" compile="0" resource="0" file="Source/FIFO.h"/>
-        <FILE id="RSwFfE" name="LowCutBand.cpp" compile="1" resource="0" file="Source/LowCutBand.cpp"/>
-        <FILE id="j0dWFm" name="LowCutBand.h" compile="0" resource="0" file="Source/LowCutBand.h"/>
         <FILE id="WF9R9U" name="TDF2Biquad.cpp" compile="1" resource="0" file="Source/TDF2Biquad.cpp"/>
         <FILE id="hn0SVw" name="TDF2Biquad.h" compile="0" resource="0" file="Source/TDF2Biquad.h"/>
       </GROUP>

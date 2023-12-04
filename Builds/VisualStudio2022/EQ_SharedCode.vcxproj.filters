@@ -5,6 +5,9 @@
     <Filter Include="EQ\Source\LookAndFeel">
       <UniqueIdentifier>{76F1081B-BAB1-523E-6D0C-23B8828AE5BC}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EQ\Source\Audio\EQBands">
+      <UniqueIdentifier>{D99786F9-25EA-6EE3-C77D-7835DBDA2063}</UniqueIdentifier>
+    </Filter>
     <Filter Include="EQ\Source\Audio">
       <UniqueIdentifier>{A84D645E-B355-3450-4BBF-D75BE2B79F5D}</UniqueIdentifier>
     </Filter>
@@ -640,6 +643,18 @@
     <ClCompile Include="..\..\Source\CustomLookAndFeel.cpp">
       <Filter>EQ\Source\LookAndFeel</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\AbstractFilterBand.cpp">
+      <Filter>EQ\Source\Audio\EQBands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PeakBand.cpp">
+      <Filter>EQ\Source\Audio\EQBands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\HighCutBand.cpp">
+      <Filter>EQ\Source\Audio\EQBands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\LowCutBand.cpp">
+      <Filter>EQ\Source\Audio\EQBands</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\EQProcessor.cpp">
       <Filter>EQ\Source\Audio</Filter>
     </ClCompile>
@@ -647,9 +662,6 @@
       <Filter>EQ\Source\Audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\FIFO.cpp">
-      <Filter>EQ\Source\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\LowCutBand.cpp">
       <Filter>EQ\Source\Audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\TDF2Biquad.cpp">
@@ -3225,6 +3237,18 @@
     <ClInclude Include="..\..\Source\CustomLookAndFeel.h">
       <Filter>EQ\Source\LookAndFeel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\AbstractFilterBand.h">
+      <Filter>EQ\Source\Audio\EQBands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PeakBand.h">
+      <Filter>EQ\Source\Audio\EQBands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\HighCutBand.h">
+      <Filter>EQ\Source\Audio\EQBands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\LowCutBand.h">
+      <Filter>EQ\Source\Audio\EQBands</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\EQProcessor.h">
       <Filter>EQ\Source\Audio</Filter>
     </ClInclude>
@@ -3232,9 +3256,6 @@
       <Filter>EQ\Source\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\FIFO.h">
-      <Filter>EQ\Source\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\LowCutBand.h">
       <Filter>EQ\Source\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\TDF2Biquad.h">

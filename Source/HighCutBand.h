@@ -1,9 +1,9 @@
 /*
   ==============================================================================
 
-    LowPass.h
-    Created: 3 Dec 2023 1:49:57pm
-    Author:  Harvey Fretwell
+    HighCutBand.h
+    Created: 4 Dec 2023 1:40:56pm
+    Author:  Harvey
 
   ==============================================================================
 */
@@ -15,11 +15,11 @@
 
 //==============================================================================
 
-class LowCutBand : public AbstractFilterBand
+class HighCutBand : public AbstractFilterBand
 {
 public:
-    LowCutBand();
-    ~LowCutBand();
+    HighCutBand();
+    ~HighCutBand();
 
     void updateCoefficients(float frequency, float Q, float sampleRate);
 
@@ -29,6 +29,4 @@ private:
 
     //==============================================================================
 
-    // SHOULD ALWAYS BE AT THE END OF THE JUCE CLASS
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LowCutBand)
 };
