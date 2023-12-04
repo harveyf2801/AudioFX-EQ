@@ -7,7 +7,12 @@ project(EQ)
 # Set the C++ standard
 set(CMAKE_CXX_STANDARD 23)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+# Compile without warnings being treated as errors
+option (TRACKTION_CI_ENABLED "" OFF)
+
+if (TRACKTION_CI_ENABLED)
+    #set CI-only options, add warning as errors, etc
+endif()
 
 # Setting the library directory
 set(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs)
@@ -15,12 +20,12 @@ set(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs)
 # Including the CPM package manager
 include(cmake/cpm.cmake)
 
-# Adding the JUCE framework with version 7.0.5
+# Adding the JUCE framework with version 7.0.9
 CPMAddPackage(
     NAME JUCE
     GITHUB_REPOSITORY juce-framework/JUCE
-    GIT_TAG 7.0.5
-    VERSION 7.0.5
+    GIT_TAG 7.0.9
+    VERSION 7.0.9
     SOURCE_DIR ${LIB_DIR}/juce
 )
 

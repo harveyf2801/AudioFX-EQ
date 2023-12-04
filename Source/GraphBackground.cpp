@@ -32,8 +32,8 @@ GraphBackground::GraphBackground(const juce::Array<float>& freqs, const juce::Ar
     
     // Creating the colour gradient
     _colourGradient.addColour(0, juce::Colours::transparentBlack);
-    _colourGradient.addColour(0.1, findColour(freqLineColourId));
-    _colourGradient.addColour(0.9, findColour(freqLineColourId));
+    _colourGradient.addColour(0.05, findColour(freqLineColourId));
+    _colourGradient.addColour(0.95, findColour(freqLineColourId));
     _colourGradient.addColour(1.0, juce::Colours::transparentBlack);
 }
 
@@ -60,6 +60,11 @@ void GraphBackground::updateYMap(float ymin, float ymax)
     }
 }
 
+void GraphBackground::plotResponseCurve(juce::Rectangle<int> /*container*/)
+{
+
+}
+
 void GraphBackground::drawBackground(juce::Rectangle<int> container)
 {
     // Defining some temp variables to help with dimentions
@@ -68,10 +73,10 @@ void GraphBackground::drawBackground(juce::Rectangle<int> container)
     auto top = container.getY();
     auto bottom = container.getBottom();
     auto width = container.getWidth();
-    auto height = container.getHeight();
+    /*auto height = container.getHeight();*/
 
     // Creating a background image to draw on
-    background = juce::Image(juce::Image::ARGB, width, height, true);
+    background = juce::Image(juce::Image::ARGB, getLocalBounds().getWidth(), getLocalBounds().getHeight(), true);
     auto g = juce::Graphics(background);
     g.setFont(fontHeight);
     
@@ -81,7 +86,7 @@ void GraphBackground::drawBackground(juce::Rectangle<int> container)
 
     /* ============================================== */
 
-    // Drwaing all horizontal lines
+    // Drawing all horizontal lines
     
     // Setting the gradient to start at the top and end at the bottom
     _colourGradient.point1 = juce::Point<float>(static_cast<float>(width / 2), static_cast<float>(top));
@@ -94,8 +99,11 @@ void GraphBackground::drawBackground(juce::Rectangle<int> container)
         auto x = _logFreqs[i];
         
         // Applying the gradient fill to the line
-        g.setGradientFill(_colourGradient);
-        g.drawVerticalLine(static_cast<int>(x), static_cast<float>(top), static_cast<float>(bottom));
+        if (i != 0 && i != (_freqs.size() - 1))
+        {
+            g.setGradientFill(_colourGradient);
+            g.drawVerticalLine(static_cast<int>(x), static_cast<float>(top), static_cast<float>(bottom));
+        }
 
         // Reformatting the string to a shortened version i.e. 10kHz
         juce::String str = (freq > 999.f) ? juce::String(freq / 1000.f) + "k" : juce::String(freq);
@@ -106,9 +114,9 @@ void GraphBackground::drawBackground(juce::Rectangle<int> container)
 
         juce::Rectangle<int> r;
 
-        r.setSize(textWidth, fontHeight);
-        r.setTop(top);
-        r.setX(x-(textWidth/2));
+        r.setSize(textWidth, static_cast<int>(fontHeight));
+        r.setY(getLocalBounds().getY());
+        r.setX(static_cast<int>(x) - (textWidth / 2));
         
         // Setting the colour of the text / label
         g.setColour(findColour(labelColourId));
@@ -129,18 +137,22 @@ void GraphBackground::drawBackground(juce::Rectangle<int> container)
         auto gain = _gains[i];
         auto y = _logGains[i];
         
-        // Setting the 0 point line to it's specified colour
-        if (gain == 0.f)
-        {
-            // Apply gain 0 line colour to the line
-            g.setColour(findColour(gain0LineColourId));
-        } else {
-            // Applying the gradient fill to the line
-            g.setGradientFill(_colourGradient);
-        }
-        
         // Drawing the gain line
-        g.drawHorizontalLine(static_cast<int>(y), static_cast<float>(left), static_cast<float>(right));
+        if (i != 0 && i != (_gains.size() - 1))
+        {
+            // Setting the 0 point line to it's specified colour
+            if (gain == 0.f)
+            {
+                // Apply gain 0 line colour to the line
+                g.setColour(findColour(gain0LineColourId));
+            }
+            else {
+                // Applying the gradient fill to the line
+                g.setGradientFill(_colourGradient);
+            }
+
+            g.drawHorizontalLine(static_cast<int>(y), static_cast<float>(left), static_cast<float>(right));
+        }
         
         // Setting the label colour
         g.setColour(findColour(labelColourId));
@@ -153,22 +165,22 @@ void GraphBackground::drawBackground(juce::Rectangle<int> container)
         
         juce::Rectangle<int> r;
         
-        r.setSize(textWidth, fontHeight);
-        r.setX(getWidth() - textWidth);
-        r.setY(static_cast<int>(y)-(fontHeight/2));
+        r.setSize(textWidth, static_cast<int>(fontHeight));
+        r.setX(right);
+        r.setY(static_cast<int>(y-(fontHeight/2)));
 
         // Setting the colour of the text / label
         g.drawFittedText(str, r, juce::Justification::centredLeft, 1);
 
-        // * Draws gain ticks to the left of the graph
+        // Draws gain ticks to the left of the graph with skewedFactor so 0 is top
         str.clear();
         str << (gain - _maxGain) << "dB";
 
-        r.setLeft(left);
         textWidth = g.getCurrentFont().getStringWidth(str);
-        r.setSize(textWidth, fontHeight);
+        r.setSize(textWidth, static_cast<int>(fontHeight));
+        r.setX(left - textWidth);
 
-        g.drawFittedText(str, r, juce::Justification::centredLeft, 1);
+        g.drawFittedText(str, r, juce::Justification::centredRight, 1);
     }
 }
 
@@ -183,10 +195,13 @@ void GraphBackground::resized()
     // Getting the component bounds
     auto bounds = getLocalBounds();
 
+    // Reducing the bounds for the main graph container
+    auto graphContainer = bounds.reduced(45, 30);
+
     // Updating the X and Y maps for drawing the lines
-    updateXMap(static_cast<float>(bounds.getX()), static_cast<float>(bounds.getRight()));
-    updateYMap(static_cast<float>(bounds.getBottom()), static_cast<float>(bounds.getY()));
+    updateXMap(static_cast<float>(graphContainer.getX()), static_cast<float>(graphContainer.getWidth()));
+    updateYMap(static_cast<float>(graphContainer.getBottom()), static_cast<float>(graphContainer.getY()));
 
     // Redraw the background image
-    drawBackground(bounds);
+    drawBackground(graphContainer);
 }

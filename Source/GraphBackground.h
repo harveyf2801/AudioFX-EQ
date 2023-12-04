@@ -34,8 +34,8 @@ public:
     // Updating the drawing of the graphs background image
     void drawBackground(juce::Rectangle<int> container);
     
-    // Updating the drawing of the graphs labels
-    void drawGraphLabels(juce::Rectangle<int> container);
+    // Updating the response curve of the graph
+    void plotResponseCurve(juce::Rectangle<int> container);
     
     // Paints the current component image
     void paint (juce::Graphics& g) override;

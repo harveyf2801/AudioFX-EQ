@@ -12,7 +12,7 @@ EQAudioProcessorEditor::EQAudioProcessorEditor (EQAudioProcessor& p)
     // Initialising the spectral analyser object with the frequency ticks and gain ticks to display on the graph
     , _graphBackground (
         juce::Array<float>( 20.f, 40.f, 100.f, 200.f, 400.f, 600.f, 1000.f, 2000.f, 4000.f, 6000.f, 10000.f, 20000.f ),
-        juce::Array<float>( -30, -25, -20, -15, -10, -5, 0, 5, 10, 20 )
+        juce::Array<float>( -30.f, -25.f, -20.f, -15.f, -10.f, -5.f, 0.f, 5.f, 10.f, 20.f )
     )
     // Initialising the cut and shelf parameters, passing in a reference to the audio processor value tree state, and the ID for the parameter group
     , _lowCutParams (_audioProcessor.apvts, "low-cut")

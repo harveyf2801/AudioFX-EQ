@@ -143,6 +143,8 @@
     <ClCompile Include="..\..\Source\EQProcessor.cpp"/>
     <ClCompile Include="..\..\Source\FFTProcessor.cpp"/>
     <ClCompile Include="..\..\Source\FIFO.cpp"/>
+    <ClCompile Include="..\..\Source\LowCutBand.cpp"/>
+    <ClCompile Include="..\..\Source\TDF2Biquad.cpp"/>
     <ClCompile Include="..\..\Source\PeakBandParameters.cpp"/>
     <ClCompile Include="..\..\Source\ShelfBandParameters.cpp"/>
     <ClCompile Include="..\..\Source\CutBandParameters.cpp"/>
@@ -2527,6 +2529,8 @@
     <ClInclude Include="..\..\Source\EQProcessor.h"/>
     <ClInclude Include="..\..\Source\FFTProcessor.h"/>
     <ClInclude Include="..\..\Source\FIFO.h"/>
+    <ClInclude Include="..\..\Source\LowCutBand.h"/>
+    <ClInclude Include="..\..\Source\TDF2Biquad.h"/>
     <ClInclude Include="..\..\Source\PeakBandParameters.h"/>
     <ClInclude Include="..\..\Source\ShelfBandParameters.h"/>
     <ClInclude Include="..\..\Source\CutBandParameters.h"/>

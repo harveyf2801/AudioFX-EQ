@@ -649,6 +649,12 @@
     <ClCompile Include="..\..\Source\FIFO.cpp">
       <Filter>EQ\Source\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\LowCutBand.cpp">
+      <Filter>EQ\Source\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\TDF2Biquad.cpp">
+      <Filter>EQ\Source\Audio</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\PeakBandParameters.cpp">
       <Filter>EQ\Source\GUI\ParameterComponents</Filter>
     </ClCompile>
@@ -3226,6 +3232,12 @@
       <Filter>EQ\Source\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\FIFO.h">
+      <Filter>EQ\Source\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\LowCutBand.h">
+      <Filter>EQ\Source\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\TDF2Biquad.h">
       <Filter>EQ\Source\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PeakBandParameters.h">

@@ -58,8 +58,8 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
     // Draw outline curve ...
     float diameterCurve = juce::jmin(width - 10.0f, height - 10.0f);
     float radiusCurve = diameterCurve / 2;
-    float centreXCurve = x + width / 2;
-    float centreYCurve = y + height / 2;
+    float centreXCurve = static_cast<float>(x + width / 2);
+    float centreYCurve = static_cast<float>(y + height / 2);
     float rXCurve = centreXCurve - radiusCurve;
     float rYCurve = centreYCurve - radiusCurve;
 
@@ -93,7 +93,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 }
 									 
 void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height,
-    float sliderPos, float minSliderPos, float maxSliderPos,
+    float sliderPos, float minSliderPos, float /*maxSliderPos*/,
     const juce::Slider::SliderStyle, juce::Slider& slider)
 {
     /* Defining the funtion to draw the linear sliders. */
@@ -106,25 +106,25 @@ void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
     // Calcuating dimentions when bar is vertical ...
     if (slider.getSliderStyle() == juce::Slider::SliderStyle::LinearVertical)
     {
-        sliderBackground.startNewSubPath(x + width / 2, y);
-        sliderBackground.lineTo(x + width / 2, y + height);
+        sliderBackground.startNewSubPath(static_cast<float>(x + width / 2), static_cast<float>(y));
+        sliderBackground.lineTo(static_cast<float>(x + width / 2), static_cast<float>(y + height));
 
-        sliderForeground.startNewSubPath(x + width / 2, minSliderPos);
-        sliderForeground.lineTo(x + width / 2, sliderPos);
+        sliderForeground.startNewSubPath(static_cast<float>(x + width / 2), minSliderPos);
+        sliderForeground.lineTo(static_cast<float>(x + width / 2), sliderPos);
 
-        sliderThumb.addEllipse(x - 6 + width / 2, sliderPos - 6, 12.0f, 12.0f);
+        sliderThumb.addEllipse(static_cast<float>(x - 6 + width / 2), sliderPos - 6.f, 12.0f, 12.0f);
     }
 
     // Calcuating dimentions when bar is horizontal ...
     else
     {
-        sliderBackground.startNewSubPath(x, y + height / 2);
-        sliderBackground.lineTo(x + width, y + height / 2);
+        sliderBackground.startNewSubPath(static_cast<float>(x), static_cast<float>(y + height / 2));
+        sliderBackground.lineTo(static_cast<float>(x + width), static_cast<float>(y + height / 2));
 
-        sliderForeground.startNewSubPath(minSliderPos, y + height / 2);
-        sliderForeground.lineTo(sliderPos, y + height / 2);
+        sliderForeground.startNewSubPath(minSliderPos, static_cast<float>(y + height / 2));
+        sliderForeground.lineTo(sliderPos, static_cast<float>(y + height / 2));
 
-        sliderThumb.addEllipse(sliderPos - 6, y - 6 + height / 2, 12.0f, 12.0f);
+        sliderThumb.addEllipse(sliderPos - 6.f, static_cast<float>(y - 6 + height / 2), 12.0f, 12.0f);
     }
 
     // Draw both paths with curved and rounded edges ...
@@ -147,8 +147,8 @@ void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
     g.fillPath(sliderThumb);
 }
 
-void CustomLookAndFeel::drawBubble(juce::Graphics& g, juce::BubbleComponent& bubble,
-    const juce::Point< float >& tip, const juce::Rectangle< float >& body)
+void CustomLookAndFeel::drawBubble(juce::Graphics& g, juce::BubbleComponent& /*bubble*/,
+    const juce::Point< float >& /*tip*/, const juce::Rectangle< float >& body)
 {
     juce::Path outline;
     outline.addRoundedRectangle(body, 10.0f);
@@ -158,7 +158,7 @@ void CustomLookAndFeel::drawBubble(juce::Graphics& g, juce::BubbleComponent& bub
 }
 
 void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& button,
-    const juce::Colour& backgroundColour,
+    const juce::Colour& /*backgroundColour*/,
     bool isMouseOverButton, bool isButtonDown)
 {
     auto baseColour = findColour(juce::TextButton::buttonOnColourId);

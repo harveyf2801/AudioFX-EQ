@@ -34,36 +34,21 @@ juce_generate_juce_header(EQ)
 
 target_sources(${PROJECT_NAME}
     PRIVATE
-        PluginEditor.cpp
-        PluginProcessor.cpp
+        CustomLookAndFeel.cpp
+        CutBandParameters.cpp
         EQProcessor.cpp
         FFTProcessor.cpp
         FIFO.cpp
-        CutBandParameters.cpp
-        PeakBandParameters.cpp
-        SpectralAnalyser.cpp
+        GraphBackground.cpp
         LabelledChoiceSlider.cpp
         LabelledSlider.cpp
-        # source/PluginEditor.cpp
-        # source/PluginProcessor.cpp
-        # source/Processing/EQProcessor.cpp
-        # source/Processing/FFTProcessor.cpp
-        # source/Processing/FIFO.cpp
-        # source/GUI/EQComponents/CutBandParameters.cpp
-        # source/GUI/EQComponents/PeakBandParameters.cpp
-        # source/GUI/EQComponents/SpectralAnalyser.cpp
-        # source/GUI/Components/LabelledChoiceSlider.cpp
-        # source/GUI/Components/LabelledSlider.cpp
+        LowCutBand.cpp
+        PeakBandParameters.cpp
+        PluginEditor.cpp
+        PluginProcessor.cpp
+        ShelfBandParameters.cpp
+        TDF2Biquad.cpp
 )
-
-# target_include_directories(${PROJECT_NAME}
-#     PRIVATE
-#         source
-#         source/GUI
-#         source/GUI/Components
-#         source/GUI/EQComponents
-#         source/Processing
-# )
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE

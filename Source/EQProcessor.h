@@ -3,7 +3,7 @@
 
     EQProcessor.h
     Created: 14 Dec 2022 1:30:13am
-    Author:  Harvey
+    Author:  Harvey Fretwell
 
   ==============================================================================
 */

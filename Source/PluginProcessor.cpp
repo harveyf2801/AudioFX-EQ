@@ -35,11 +35,42 @@ EQAudioProcessor::EQAudioProcessor()
     // we provide an ID of "Parameters" and then dynamically create our parameter
     // layout by calling the custom initParameterLayout method.
      , apvts (*this, &undoManager, "Parameters", initParameterLayout())
+     , lowCutBand(8000, 1, 44100)
+     , filter(lowCutBand.getCoefficients())
 {
 }
 
 EQAudioProcessor::~EQAudioProcessor()
 {
+}
+
+static juce::NormalisableRange<float> createCenterSkewRange(float min, float max, float step, float skewCenter)
+{
+    auto range = juce::NormalisableRange<float>(min, max, step);
+    range.setSkewForCentre(skewCenter);
+    return range;
+}
+
+static juce::Array<int> log_space(int start, int end, int num)
+{
+    // Ensure valid input
+    if (start <= 0 || end <= 0 || num < 2)
+        /*
+        Invalid input. Ensure start and end are positive and num is greater than 1.
+        */
+        jassertfalse;
+
+    // Calculate the logarithmic step
+    double log_step = std::pow(static_cast<double>(end) / start, 1.0 / (num - 1));
+
+    // Generate the logarithmically spaced values and round to integers
+    juce::Array<int> log_values;
+    for (int i = 0; i < num; ++i)
+    {
+        log_values.add(static_cast<int>(std::round(start * std::pow(log_step, i))));
+    }
+
+    return log_values;
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParameterLayout()
@@ -75,29 +106,82 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParame
                     Min: 0.1       Max: 2        Step: 0.01      SkewFactor: 0.25
      */
 
-    // Iterating through the amount of peaking bands we specified above
-    for (auto i = 1; i <= peakingBands; ++i)
+    // Defining the default frequency parameter value for each band, equally spaced logarithmically
+    auto defaultFreqs = log_space(20, 20000, 4 + peakingBands);
+    
+    // Defining the names for the cut and shelving bands
+    auto cutShelfNames = juce::Array<juce::String>("Low", "High");
+
+    // Iterating through the two cut bands
+    for (auto i = 0; i < 2; ++i)
     {
-        // Defining the default frequency parameter value for each band, equally spaced
-        float defaultFreq = (20000 - 20) / ((float)peakingBands + 1);
-        
-        // Defining the band name and ID for each peaking band in the format "peak-{peak number}-{parameter type}"
-        juce::String bandName = "Peak " + juce::String(i) + " ";
+        // Defining the band name and ID for each cut band in the format "{cut type}-cut-{parameter type}"
+        juce::String bandName = cutShelfNames[i] + " Cut ";
         juce::String bandId = bandName.replaceCharacter(' ', '-').toLowerCase();
-        
+
         // * For each Audio Parameter, we usually provide an:
         //      - ID (to link parameters to functions)
         //      - Name (visible to users)
-        //      - Range / min + max
+        //      - Range / min, max, step, skew
         //      - Default value
         // * Parameter ID provides the param ID and a version hint (for AU plugins)
         // * Normalisable Range provides a min, max, and interval value
         
+        // Adding the frequency parameter for each cut band (in Hz)
+        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "freq", 1),
+            bandName + "Frequency",
+            createCenterSkewRange(20.f, 20000.f, 0.4f, 1000.0f),
+            static_cast<float>(defaultFreqs.removeAndReturn(i * (defaultFreqs.size() - 1)))));
+
+        // Adding the slope parameter for each cut band (this goes up in dB/Octave)
+        layout.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID(bandId + "slope", 1),
+            bandName + "Slope", juce::StringArray("6", "12", "18", "24", "36", "48"), 0));
+
+        // Adding the q parameter for each peak (in q width)
+        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "q", 1),
+            bandName + "Q",
+            createCenterSkewRange(0.1f, 100.f, 0.01f, 1.0f),
+            1.0f));
+    }
+
+    // Iterating through the two shelf bands
+    for (auto i = 0; i < 2; ++i)
+    {
+        // Defining the band name and ID for each shelf band in the format "{shelf type}-shelf-{parameter type}"
+        juce::String bandName = cutShelfNames[i] + " Shelf ";
+        juce::String bandId = bandName.replaceCharacter(' ', '-').toLowerCase();
+
+        // Adding the frequency parameter for each shelf (in Hz)
+        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "freq", 1),
+            bandName + "Frequency",
+            createCenterSkewRange(20.f, 20000.f, 0.4f, 1000.f),
+            static_cast<float>(defaultFreqs.removeAndReturn(i * (defaultFreqs.size() - 1)))));
+
+        // Adding the gain parameter for each shelf (in dB)
+        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "gain", 1),
+            bandName + "Gain",
+            juce::NormalisableRange<float>(-24.f, 24.f, 0.1f, 1.f),
+            0.0f));
+
+        // Adding the q parameter for each shelf (in q width)
+        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "q", 1),
+            bandName + "Q",
+            createCenterSkewRange(0.1f, 2.f, 0.01f, 1.0f),
+            1.0f));
+    }
+
+    // Iterating through the amount of peaking bands we specified above
+    for (auto i = 1; i <= peakingBands; ++i)
+    {
+        // Defining the band name and ID for each peaking band in the format "peak-{peak number}-{parameter type}"
+        juce::String bandName = "Peak " + juce::String(i) + " ";
+        juce::String bandId = bandName.replaceCharacter(' ', '-').toLowerCase();
+        
         // Adding the frequency parameter for each peak (in Hz)
         layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "freq", 1),
             bandName + "Frequency",
-            juce::NormalisableRange<float>(20.f, 20000.f, 0.4f, 0.25f),
-            defaultFreq * i));
+            createCenterSkewRange(20.f, 20000.f, 0.4f, 1000.f),
+            static_cast<float>(defaultFreqs[i - 1])));
         
         // Adding the gain parameter for each peak (in dB)
         layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "gain", 1),
@@ -108,61 +192,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParame
         // Adding the q parameter for each peak (in q width)
         layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "q", 1),
             bandName + "Q",
-            juce::NormalisableRange<float>(0.1f, 100.f, 0.1f, 0.25f),
+            createCenterSkewRange(0.1f, 100.f, 0.01f, 1.0f),
             1.0f));
-    }
-    
-    // Defining the names for the cut and shelving bands
-    auto cutShelfNames = juce::Array<juce::String>("Low", "High");
-    
-    // Iterating through the two shelf bands
-    for (auto i = 0; i < 2; ++i)
-    {
-        // Defining the band name and ID for each shelf band in the format "{shelf type}-shelf-{parameter type}"
-        juce::String bandName = cutShelfNames[i] + " Shelf ";
-        juce::String bandId = bandName.replaceCharacter(' ', '-').toLowerCase();
-        
-        // Adding the frequency parameter for each shelf (in Hz)
-        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "freq", 1),
-            bandName + "Frequency",
-            juce::NormalisableRange<float>(20.f, 20000.f, 0.4f, 0.25f),
-            20.f * (i * 1000.f)));
-        
-        // Adding the gain parameter for each shelf (in dB)
-        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "gain", 1),
-            bandName + "Gain",
-            juce::NormalisableRange<float>(-24.f, 24.f, 0.1f, 1.f),
-            0.0f));
-        
-        // Adding the q parameter for each shelf (in q width)
-        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "q", 1),
-            bandName + "Q",
-            juce::NormalisableRange<float>(0.1f, 2.f, 0.1f, 1.f),
-            1.0f));
-    }
-    
-    // Iterating through the two cut bands
-    for (auto i = 0; i < 2; ++i)
-    {
-        // Defining the band name and ID for each cut band in the format "{cut type}-cut-{parameter type}"
-        juce::String bandName = cutShelfNames[i] + " Cut ";
-        juce::String bandId = bandName.replaceCharacter(' ', '-').toLowerCase();
-        
-        // Adding the frequency parameter for each cut band (in Hz)
-        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "freq", 1),
-            bandName + "Frequency",
-            juce::NormalisableRange<float>(20.f, 20000.f, 0.4f, 0.25f),
-            20.f * (i * 1000.f)));
-        
-        // Adding the q parameter for each peak (in q width)
-        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "q", 1),
-            bandName + "Q",
-            juce::NormalisableRange<float>(0.1f, 30.f, 0.5f, 1.f),
-            1.0f));
-        
-        // Adding the slope parameter for each cut band (this goes up in dB/Octave)
-        layout.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID(bandId + "slope", 1),
-            bandName + "Slope", juce::StringArray("6", "12", "18", "24", "36", "48"), 0));
     }
 
     return layout;
@@ -233,10 +264,18 @@ void EQAudioProcessor::changeProgramName (int /*index*/, const juce::String& /*n
 
 //==============================================================================
 
-void EQAudioProcessor::prepareToPlay (double /*sampleRate*/, int /*samplesPerBlock*/)
+void EQAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    const juce::dsp::ProcessSpec spec{ sampleRate, samplesPerBlock, getNumOutputChannels() };
+
+    lowCutBand.setParams(*apvts.getRawParameterValue("low-cut-freq"),
+                         *apvts.getRawParameterValue("low-cut-q"));
+    lowCutBand.setSampleRate(sampleRate);
+
+    filter.prepare(spec);
+    filter.reset();
 }
 
 void EQAudioProcessor::releaseResources()
@@ -294,17 +333,24 @@ void EQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mid
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
-        
-        for (auto i = 0; i < buffer.getNumChannels(); ++i)
-        {
-            auto sample = channelData[i];
-            
-            // ..do something to the data ...
-        }
-    }
+    //for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    //{
+    //    auto* channelData = buffer.getWritePointer (channel);
+
+    //    for (auto i = 0; i < buffer.getNumChannels(); ++i)
+    //    {
+    //        auto sample = channelData[i];
+    //    }
+    //}
+
+    juce::dsp::AudioBlock<float> block(buffer);
+
+    lowCutBand.setParams(*apvts.getRawParameterValue("low-cut-freq"),
+                         *apvts.getRawParameterValue("low-cut-q"));
+
+    *filter.state = *lowCutBand.getCoefficients();
+
+    filter.process(juce::dsp::ProcessContextReplacing<float>(block));
 }
 
 //==============================================================================
