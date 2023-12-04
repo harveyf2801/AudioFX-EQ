@@ -1,5 +1,21 @@
 # AudioFX - EQ
 
+TODO:
+
+Audio Processing:
+
+- Sort Biquad filter so that it has no buzzing etc
+- Implement dsp::IIR::Coefficients< NumericType > instead with ReferenceCountedObjectPtr to keep it 'safe'
+- Create a whole EQ processing chain with multiple bands.
+
+GUI:
+
+- Add in parameters for bypassing filter bands
+- Fix positioning of labels and graph background (maybe try seperating the label layout and background drawing)
+- Add filter band drawing
+- Add spectral drawing on the graph
+- Add movable drag components for bands
+
 ## Configure Project
 
 Configure for Windows
