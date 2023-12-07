@@ -13,14 +13,14 @@
 
 //==============================================================================
 
-TDF2Biquad::TDF2Biquad(std::vector<float>& b, std::vector<float>& a)
+TDF2Biquad::TDF2Biquad(std::vector<float> b, std::vector<float> a)
     : _b(b)
     , _a(a)
 {
     reset();
 }
 
-void TDF2Biquad::setCoefficients(std::vector<float>& newB, std::vector<float>& newA)
+void TDF2Biquad::setCoefficients(std::vector<float> newB, std::vector<float> newA)
 {
 
     // Make sure coeffs a and b are equal in size (padding with zeros)
@@ -31,15 +31,10 @@ void TDF2Biquad::setCoefficients(std::vector<float>& newB, std::vector<float>& n
 
     _b = newB;
     _a = newA;
-
-    //_s1, _s2 = 0, 0;
 }
 
 float TDF2Biquad::processSample(float X)
 {
-    jassert(_b.size() == 3);
-    jassert(_a.size() == 3);
-
     float Y = (_b[0] * X) + _s1;
 
     _s1 = (_b[1] * X) - (_a[1] * Y) + _s2 ;

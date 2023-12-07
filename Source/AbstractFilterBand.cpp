@@ -23,9 +23,6 @@ AbstractFilterBand::~AbstractFilterBand()
 
 void AbstractFilterBand::normaliseCoefficients()
 {
-    jassert(_b.size() == 3);
-    jassert(_a.size() == 3);
-
     for(size_t i; i < _b.size(); ++i)
     {
         _b[i] /= _a[0];
@@ -36,12 +33,12 @@ void AbstractFilterBand::normaliseCoefficients()
     }
 }
 
-std::vector<float>& AbstractFilterBand::getBCoefficients()
+std::vector<float> AbstractFilterBand::getBCoefficients()
 {
     return _b;
 }
 
-std::vector<float>& AbstractFilterBand::getACoefficients()
+std::vector<float> AbstractFilterBand::getACoefficients()
 {
     return _a;
 }

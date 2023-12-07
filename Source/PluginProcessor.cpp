@@ -264,11 +264,12 @@ void EQAudioProcessor::changeProgramName (int /*index*/, const juce::String& /*n
 
 void EQAudioProcessor::updateParams ()
 {
-    lowCutBand.updateCoefficients(*apvts.getRawParameterValue("low-cut-freq"), *apvts.getRawParameterValue("low-cut-q"), getSampleRate());
+    lowCutBand.updateCoefficients(2000, 1, getSampleRate());
     
     for (auto channel = 0; channel < getTotalNumOutputChannels(); channel++)
     {
-        filterChain.add(TDF2Biquad(lowCutBand.getBCoefficients(), lowCutBand.getACoefficients()));
+        TDF2Biquad* filter = &filterChain.getReference(channel);
+        filter->setCoefficients(lowCutBand.getBCoefficients(), lowCutBand.getACoefficients());
     }
 }
 
@@ -276,9 +277,13 @@ void EQAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-    
 
-    updateParams();
+    lowCutBand.updateCoefficients(5000, 1, getSampleRate());
+    
+    for (auto channel = 0; channel < getTotalNumOutputChannels(); channel++)
+    {
+        filterChain.add(TDF2Biquad(lowCutBand.getBCoefficients(), lowCutBand.getACoefficients()));
+    }
 }
 
 void EQAudioProcessor::releaseResources()
@@ -315,10 +320,6 @@ bool EQAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 
 void EQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& /*midiMessages*/)
 {
-    
-    updateParams();
-    
-    
     // Removes high precision floating point values close to zero that may be computationally heavy
     juce::ScopedNoDenormals noDenormals;
     
@@ -334,6 +335,10 @@ void EQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mid
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
+    
+    updateParams();
+    
+    
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
     // Make sure to reset the state if your inner loop is processing

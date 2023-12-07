@@ -21,8 +21,8 @@ public:
 
     virtual void updateCoefficients(float frequency, float Q, float sampleRate){};
     
-    std::vector<float>& getBCoefficients();
-    std::vector<float>& getACoefficients();
+    std::vector<float> getBCoefficients();
+    std::vector<float> getACoefficients();
 
 protected:
 
