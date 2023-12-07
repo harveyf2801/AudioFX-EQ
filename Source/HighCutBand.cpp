@@ -21,7 +21,7 @@ HighCutBand::~HighCutBand()
 {
 }
 
-void HighCutBand::updateCoefficients(float frequency, float Q, float sampleRate)
+juce::dsp::IIR::Coefficients<float>::Ptr HighCutBand::getCoefficients(float frequency, float Q, float sampleRate)
 {
     // Intermediate variables
     float w0 = 2 * juce::MathConstants<float>::pi * frequency / sampleRate;
@@ -35,8 +35,11 @@ void HighCutBand::updateCoefficients(float frequency, float Q, float sampleRate)
     float a1 = -2 * std::cos(w0);
     float a2 = 1 - alpha;
     
-    _b = {b0, b1, b2};
-    _a = {a0, a1, a2};
-    
-    normaliseCoefficients();
+    return *new juce::dsp::IIR::Coefficients<float>(
+        b0 / a0,
+        b1 / a0,
+        b2 / a0,
+        a0 / a0,
+        a1 / a0,
+        a2 / a0);
 }

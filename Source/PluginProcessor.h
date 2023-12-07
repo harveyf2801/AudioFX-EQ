@@ -14,7 +14,7 @@
 
 #include <JuceHeader.h>
 #include "LowCutBand.h"
-#include "TDF2Biquad.h"
+#include "EQProcessor.h"
 
 //==============================================================================
 
@@ -113,8 +113,10 @@ private:
     
     // Declaring the EQ processor which will be used to perform
     // the audio processing of the EQ plugin.
+    // 
+    //EQProcessor _eqProcessor;
     LowCutBand lowCutBand;
-    juce::Array<TDF2Biquad> filterChain;
+    juce::dsp::ProcessorDuplicator <juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> filter;
 
     //==============================================================================
     

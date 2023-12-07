@@ -9,3 +9,23 @@
 */
 
 #pragma once
+
+#include <JuceHeader.h>
+
+//==============================================================================
+
+class PeakBand
+{
+public:
+    PeakBand();
+    ~PeakBand();
+
+    juce::dsp::IIR::Coefficients<float>::Ptr getCoefficients(float frequency, float Q, float gain, float sampleRate);
+
+private:
+
+    // Declaring all private methods and attributes
+
+    //==============================================================================
+
+};

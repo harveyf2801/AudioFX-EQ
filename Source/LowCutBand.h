@@ -11,17 +11,16 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "AbstractFilterBand.h"
 
 //==============================================================================
 
-class LowCutBand : public AbstractFilterBand
+class LowCutBand
 {
 public:
     LowCutBand();
     ~LowCutBand();
 
-    void updateCoefficients(float frequency, float Q, float sampleRate);
+    juce::dsp::IIR::Coefficients<float>::Ptr getCoefficients(float frequency, float Q, float sampleRate);
 
 private:
 
@@ -29,6 +28,4 @@ private:
 
     //==============================================================================
 
-    // SHOULD ALWAYS BE AT THE END OF THE JUCE CLASS
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LowCutBand)
 };

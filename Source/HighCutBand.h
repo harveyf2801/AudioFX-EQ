@@ -15,13 +15,13 @@
 
 //==============================================================================
 
-class HighCutBand : public AbstractFilterBand
+class HighCutBand
 {
 public:
     HighCutBand();
     ~HighCutBand();
 
-    void updateCoefficients(float frequency, float Q, float sampleRate);
+    juce::dsp::IIR::Coefficients<float>::Ptr getCoefficients(float frequency, float Q, float sampleRate);
 
 private:
 

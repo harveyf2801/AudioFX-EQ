@@ -35,6 +35,7 @@ EQAudioProcessor::EQAudioProcessor()
     // we provide an ID of "Parameters" and then dynamically create our parameter
     // layout by calling the custom initParameterLayout method.
      , apvts (*this, &undoManager, "Parameters", initParameterLayout())
+     , filter(lowCutBand.getCoefficients(20, 1, 44100))
 {
 }
 
@@ -267,12 +268,17 @@ void EQAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 
-    lowCutBand.updateCoefficients(6000, 1, 44100);
+    //_eqProcessor.prepare(juce::dsp::ProcessSpec(sampleRate, (juce::uint32)samplesPerBlock, (juce::uint32)getNumInputChannels()));
+    //_eqProcessor.setLowCutParams(7000, 1);
+    //_eqProcessor.reset();
 
-    for (auto channel = 0; channel < getTotalNumOutputChannels(); channel++)
-    {
-        filterChain.add(TDF2Biquad(lowCutBand.getBCoefficients(), lowCutBand.getACoefficients()));
-    }
+    const juce::dsp::ProcessSpec spec{ sampleRate, samplesPerBlock, getNumOutputChannels() };
+
+    lowCutBand.getCoefficients(*apvts.getRawParameterValue("low-cut-freq"),
+        *apvts.getRawParameterValue("low-cut-q"), sampleRate);
+
+    filter.prepare(spec);
+    filter.reset();
 }
 
 void EQAudioProcessor::releaseResources()
@@ -330,18 +336,20 @@ void EQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mid
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
-        TDF2Biquad* filter = &filterChain.getReference(channel);
 
-        for (auto sampleIdx = 0; sampleIdx < buffer.getNumSamples(); ++sampleIdx)
-        {
-            auto sample = channelData[sampleIdx];
+    //_eqProcessor.setLowCutParams(7000, 1);
 
-            channelData[sampleIdx] = filter->processSample(sample);
-        }
-    }
+    //juce::dsp::AudioBlock<float> block;
+    //_eqProcessor.process(juce::dsp::ProcessContextReplacing<float>(block));
+
+    juce::dsp::AudioBlock<float> block(buffer);
+
+    auto coeffs = lowCutBand.getCoefficients(*apvts.getRawParameterValue("low-cut-freq"),
+        *apvts.getRawParameterValue("low-cut-q"), getSampleRate());
+
+    *filter.state = *coeffs;
+
+    filter.process(juce::dsp::ProcessContextReplacing<float>(block));
 }
 
 //==============================================================================

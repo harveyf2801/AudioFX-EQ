@@ -21,13 +21,10 @@ public:
 
     virtual void updateCoefficients(float frequency, float Q, float sampleRate){};
     
-    std::vector<float>& getBCoefficients();
-    std::vector<float>& getACoefficients();
+    juce::dsp::IIR::Coefficients<float>::Ptr getCoefficients();
 
 protected:
 
     // Declaring all private methods and attributes
-    std::vector<float> _b, _a;
-    
-    void normaliseCoefficients();
+    float _b0, _b1, _b2, _a0, _a1, _a2;
 };

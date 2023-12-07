@@ -21,27 +21,12 @@ AbstractFilterBand::~AbstractFilterBand()
 {
 }
 
-void AbstractFilterBand::normaliseCoefficients()
+juce::dsp::IIR::Coefficients<float>::Ptr AbstractFilterBand::getCoefficients()
 {
-    jassert(_b.size() == 3);
-    jassert(_a.size() == 3);
-
-    for(size_t i; i < _b.size(); ++i)
-    {
-        _b[i] /= _a[0];
-    }
-    for(size_t i; i < _a.size(); ++i)
-    {
-        _a[i] /= _a[0];
-    }
-}
-
-std::vector<float>& AbstractFilterBand::getBCoefficients()
-{
-    return _b;
-}
-
-std::vector<float>& AbstractFilterBand::getACoefficients()
-{
-    return _a;
+    return *new juce::dsp::IIR::Coefficients<float>(_b0 / _a0,
+                                                    _b1 / _a0,
+                                                    _b2 / _a0,
+                                                    _a0 / _a0,
+                                                    _a1 / _a0,
+                                                    _a2 / _a0);
 }

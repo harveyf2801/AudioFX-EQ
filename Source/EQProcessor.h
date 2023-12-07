@@ -15,7 +15,6 @@
 
 //==============================================================================
 
-
 class EQProcessor
 {
 public:
@@ -28,12 +27,28 @@ public:
     EQProcessor ();
     ~EQProcessor();
 
-    void process (juce::AudioBuffer<float>& buffer);
+    void setLowCutParams(float frequency, float Q);
 
-    void updateFilter();
+    void prepare(const juce::dsp::ProcessSpec& spec);
+
+    void process(const juce::dsp::ProcessContextReplacing<float>& context) noexcept;
+
+    //void updateFilter();
+
+    void reset() noexcept;
 
 private:
-    LowCutBand _lowCutFilter;
 
-    juce::dsp::ProcessorChain<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> _processorChain;
+    enum
+    {
+        lowCutIndex,
+        highCutIndex
+    };
+
+    double _sampleRate = 0;
+
+    using StereoFilter = juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>,
+        juce::dsp::IIR::Coefficients<float>>;
+
+    juce::dsp::ProcessorChain<StereoFilter> _processorChain;
 };
