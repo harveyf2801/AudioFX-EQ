@@ -23,11 +23,11 @@ AbstractFilterBand::~AbstractFilterBand()
 
 void AbstractFilterBand::normaliseCoefficients()
 {
-    for(size_t i; i < _b.size(); ++i)
+    for(size_t i = 0; i < _b.size(); ++i)
     {
         _b[i] /= _a[0];
     }
-    for(size_t i; i < _a.size(); ++i)
+    for(size_t i = 0; i < _a.size(); ++i)
     {
         _a[i] /= _a[0];
     }
