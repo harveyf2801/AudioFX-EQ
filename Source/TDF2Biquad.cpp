@@ -17,7 +17,7 @@ TDF2Biquad::TDF2Biquad(std::vector<float>& b, std::vector<float>& a)
     : _b(b)
     , _a(a)
 {
-    _s1, _s2 = 0, 0;
+    reset();
 }
 
 void TDF2Biquad::setCoefficients(std::vector<float>& newB, std::vector<float>& newA)
@@ -40,15 +40,16 @@ float TDF2Biquad::processSample(float X)
     jassert(_b.size() == 3);
     jassert(_a.size() == 3);
 
-    float Y = _b[0] * X + _s1;
+    float Y = (_b[0] * X) + _s1;
 
-    _s1 = _b[1] * X - _a[1] * Y + _s2 ;
-    _s2 = _b[2] * X - _a[2] * Y;
+    _s1 = (_b[1] * X) - (_a[1] * Y) + _s2 ;
+    _s2 = (_b[2] * X) - (_a[2] * Y);
 
     return Y;
 }
 
 void TDF2Biquad::reset()
 {
-    _s1, _s2 = 0, 0;
+    _s1 = 0;
+    _s2 = 0;
 }

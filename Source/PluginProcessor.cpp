@@ -158,7 +158,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParame
         // Adding the gain parameter for each shelf (in dB)
         layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "gain", 1),
             bandName + "Gain",
-            juce::NormalisableRange<float>(-24.f, 24.f, 0.1f, 1.f),
+            juce::NormalisableRange<float>(-24.f, 24.f, 0.1f, 1.0f),
             0.0f));
 
         // Adding the q parameter for each shelf (in q width)
@@ -184,7 +184,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParame
         // Adding the gain parameter for each peak (in dB)
         layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "gain", 1),
             bandName + "Gain",
-            juce::NormalisableRange<float>(-24.f, 24.f, 0.1f, 1.f),
+            juce::NormalisableRange<float>(-24.f, 24.f, 0.1f, 1.0f),
             0.0f));
         
         // Adding the q parameter for each peak (in q width)
@@ -262,17 +262,23 @@ void EQAudioProcessor::changeProgramName (int /*index*/, const juce::String& /*n
 
 //==============================================================================
 
-void EQAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void EQAudioProcessor::updateParams ()
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
-
-    lowCutBand.updateCoefficients(6000, 1, 44100);
-
+    lowCutBand.updateCoefficients(*apvts.getRawParameterValue("low-cut-freq"), *apvts.getRawParameterValue("low-cut-q"), getSampleRate());
+    
     for (auto channel = 0; channel < getTotalNumOutputChannels(); channel++)
     {
         filterChain.add(TDF2Biquad(lowCutBand.getBCoefficients(), lowCutBand.getACoefficients()));
     }
+}
+
+void EQAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+{
+    // Use this method as the place to do any pre-playback
+    // initialisation that you need..
+    
+
+    updateParams();
 }
 
 void EQAudioProcessor::releaseResources()
@@ -309,6 +315,10 @@ bool EQAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 
 void EQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& /*midiMessages*/)
 {
+    
+    updateParams();
+    
+    
     // Removes high precision floating point values close to zero that may be computationally heavy
     juce::ScopedNoDenormals noDenormals;
     
@@ -353,7 +363,7 @@ bool EQAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* EQAudioProcessor::createEditor()
 {
-    return new EQAudioProcessorEditor (*this);
+    return new juce::GenericAudioProcessorEditor(*this); // new EQAudioProcessorEditor (*this);
 }
 
 //==============================================================================

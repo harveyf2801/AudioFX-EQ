@@ -36,6 +36,8 @@ public:
 
     //==============================================================================
     
+    void updateParams();
+    
     // Used to prepare any audio before playback
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     
