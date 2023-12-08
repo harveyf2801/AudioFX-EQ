@@ -17,10 +17,12 @@
       </GROUP>
       <GROUP id="{4F33ECA7-F1F6-1D5A-97F5-8BE143B625DB}" name="Audio">
         <GROUP id="{88DFB638-FCB4-AAD5-3508-CB6B6625409D}" name="EQBands">
-          <FILE id="XGqv3a" name="AbstractFilterBand.cpp" compile="1" resource="0"
-                file="Source/AbstractFilterBand.cpp"/>
-          <FILE id="umksbQ" name="AbstractFilterBand.h" compile="0" resource="0"
-                file="Source/AbstractFilterBand.h"/>
+          <FILE id="MjHlCo" name="HighShelfBand.cpp" compile="1" resource="0"
+                file="Source/HighShelfBand.cpp"/>
+          <FILE id="itDDN6" name="HighShelfBand.h" compile="0" resource="0" file="Source/HighShelfBand.h"/>
+          <FILE id="LTjzrt" name="LowShelfBand.cpp" compile="1" resource="0"
+                file="Source/LowShelfBand.cpp"/>
+          <FILE id="kQu4Ae" name="LowShelfBand.h" compile="0" resource="0" file="Source/LowShelfBand.h"/>
           <FILE id="HcajCd" name="PeakBand.cpp" compile="1" resource="0" file="Source/PeakBand.cpp"/>
           <FILE id="cxWbWC" name="PeakBand.h" compile="0" resource="0" file="Source/PeakBand.h"/>
           <FILE id="lwPQGR" name="HighCutBand.cpp" compile="1" resource="0" file="Source/HighCutBand.cpp"/>

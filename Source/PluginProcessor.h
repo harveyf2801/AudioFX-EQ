@@ -13,13 +13,14 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "LowCutBand.h"
+#include "HighCutBand.h"
 #include "EQProcessor.h"
 
 //==============================================================================
 
 // Creating an EQ Audio Processor class which inherits from the JUCE Audio Processor
-class EQAudioProcessor : public juce::AudioProcessor
+class EQAudioProcessor : public juce::AudioProcessor,
+                         public juce::AudioProcessorValueTreeState::Listener
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
@@ -36,6 +37,8 @@ public:
 
     //==============================================================================
     
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
+
     // Used to prepare any audio before playback
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     
@@ -113,10 +116,10 @@ private:
     
     // Declaring the EQ processor which will be used to perform
     // the audio processing of the EQ plugin.
-    // 
-    //EQProcessor _eqProcessor;
-    LowCutBand lowCutBand;
-    juce::dsp::ProcessorDuplicator <juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> filter;
+     
+    EQProcessor _eqProcessor;
+    //LowCutBand lowCutBand;
+    //juce::dsp::ProcessorDuplicator <juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> filter;
 
     //==============================================================================
     

@@ -140,7 +140,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\CustomLookAndFeel.cpp"/>
-    <ClCompile Include="..\..\Source\AbstractFilterBand.cpp"/>
+    <ClCompile Include="..\..\Source\HighShelfBand.cpp"/>
+    <ClCompile Include="..\..\Source\LowShelfBand.cpp"/>
     <ClCompile Include="..\..\Source\PeakBand.cpp"/>
     <ClCompile Include="..\..\Source\HighCutBand.cpp"/>
     <ClCompile Include="..\..\Source\LowCutBand.cpp"/>
@@ -2529,7 +2530,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\CustomLookAndFeel.h"/>
-    <ClInclude Include="..\..\Source\AbstractFilterBand.h"/>
+    <ClInclude Include="..\..\Source\HighShelfBand.h"/>
+    <ClInclude Include="..\..\Source\LowShelfBand.h"/>
     <ClInclude Include="..\..\Source\PeakBand.h"/>
     <ClInclude Include="..\..\Source\HighCutBand.h"/>
     <ClInclude Include="..\..\Source\LowCutBand.h"/>

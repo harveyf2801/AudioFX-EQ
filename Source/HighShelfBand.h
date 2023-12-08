@@ -1,26 +1,25 @@
 /*
   ==============================================================================
 
-    HighCutBand.h
-    Created: 4 Dec 2023 1:40:56pm
+    HighShelfBand.h
+    Created: 8 Dec 2023 12:39:27am
     Author:  Harvey
 
   ==============================================================================
 */
 
 #pragma once
-
 #include <JuceHeader.h>
 
 //==============================================================================
 
-class HighCutBand
+class HighShelfBand
 {
 public:
-    HighCutBand();
-    ~HighCutBand();
+    HighShelfBand();
+    ~HighShelfBand();
 
-    juce::dsp::IIR::Coefficients<float>::Ptr getCoefficients(float frequency, float Q, float sampleRate);
+    juce::dsp::IIR::Coefficients<float>::Ptr getCoefficients(float frequency, float Q, float gain, float sampleRate);
 
 private:
 

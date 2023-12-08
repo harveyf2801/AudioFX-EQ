@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    AbstractFilterBand.h
-    Created: 4 Dec 2023 1:43:16pm
+    LowShelfBand.h
+    Created: 8 Dec 2023 12:39:17am
     Author:  Harvey
 
   ==============================================================================
@@ -13,18 +13,18 @@
 
 //==============================================================================
 
-class AbstractFilterBand
+class LowShelfBand
 {
 public:
-    AbstractFilterBand();
-    ~AbstractFilterBand();
+    LowShelfBand();
+    ~LowShelfBand();
 
-    virtual void updateCoefficients(float frequency, float Q, float sampleRate){};
-    
-    juce::dsp::IIR::Coefficients<float>::Ptr getCoefficients();
+    juce::dsp::IIR::Coefficients<float>::Ptr getCoefficients(float frequency, float Q, float gain, float sampleRate);
 
-protected:
+private:
 
     // Declaring all private methods and attributes
-    float _b0, _b1, _b2, _a0, _a1, _a2;
+
+    //==============================================================================
+
 };
