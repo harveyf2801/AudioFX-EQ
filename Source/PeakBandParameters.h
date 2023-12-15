@@ -12,8 +12,8 @@
 
 #include <JuceHeader.h>
 
+#include "LabelledButton.h"
 #include "LabelledSlider.h"
-#include "LabelledChoiceSlider.h"
 
 class PeakBandParameters : public juce::Component
 {
@@ -24,7 +24,7 @@ public:
     //==============================================================================
     
     // Constructor / Destructor methods
-    PeakBandParameters(juce::AudioProcessorValueTreeState& stateToUse, const juce::String parameterID);
+    PeakBandParameters(juce::AudioProcessorValueTreeState& stateToUse, const juce::String parameterID, const juce::String bandName);
     ~PeakBandParameters() override;
     
     //==============================================================================
@@ -40,6 +40,8 @@ protected:
     //==============================================================================
     
     // Declaring all peaking band parameters to contain in this section
+    juce::Label _label;
+    LabelledButton _powerButton;
     LabelledSlider _freqSlider;
     LabelledSlider _gainSlider;
     LabelledSlider _qSlider;

@@ -21,7 +21,7 @@ LowShelfBand::~LowShelfBand()
 {
 }
 
-juce::dsp::IIR::Coefficients<float>::Ptr LowShelfBand::getCoefficients(float frequency, float Q, float gain, float sampleRate)
+void LowShelfBand::updateCoefficients(float frequency, float Q, float gain, float sampleRate)
 {
     // Intermediate variables
     float w0 = 2 * juce::MathConstants<float>::pi * frequency / sampleRate;
@@ -36,7 +36,7 @@ juce::dsp::IIR::Coefficients<float>::Ptr LowShelfBand::getCoefficients(float fre
     float a1 = -2 * ((A - 1) + (A + 1) * std::cos(w0));
     float a2 = (A + 1) + (A - 1) * std::cos(w0) - 2 * std::sqrt(A) * alpha;
 
-    return *new juce::dsp::IIR::Coefficients<float>(
+    coefficients = std::make_shared<juce::dsp::IIR::Coefficients<float>>(
         b0 / a0,
         b1 / a0,
         b2 / a0,

@@ -21,8 +21,8 @@ public:
     //==============================================================================
     
     // Constructor / Destructor methods
-    ShelfBandParameters(juce::AudioProcessorValueTreeState& stateToUse, const juce::String parameterID);
-   ~ ShelfBandParameters() override;
+    ShelfBandParameters(juce::AudioProcessorValueTreeState& stateToUse, const juce::String parameterID, const juce::String bandName);
+    ~ShelfBandParameters() override;
 private:
 
    

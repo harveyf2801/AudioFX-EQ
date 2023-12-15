@@ -17,6 +17,9 @@
       </GROUP>
       <GROUP id="{4F33ECA7-F1F6-1D5A-97F5-8BE143B625DB}" name="Audio">
         <GROUP id="{88DFB638-FCB4-AAD5-3508-CB6B6625409D}" name="EQBands">
+          <FILE id="O3IJAD" name="AbstractBand.cpp" compile="1" resource="0"
+                file="Source/AbstractBand.cpp"/>
+          <FILE id="MlpMKn" name="AbstractBand.h" compile="0" resource="0" file="Source/AbstractBand.h"/>
           <FILE id="MjHlCo" name="HighShelfBand.cpp" compile="1" resource="0"
                 file="Source/HighShelfBand.cpp"/>
           <FILE id="itDDN6" name="HighShelfBand.h" compile="0" resource="0" file="Source/HighShelfBand.h"/>
@@ -62,6 +65,10 @@
                 file="Source/GraphBackground.h"/>
         </GROUP>
         <GROUP id="{782802F9-D3CF-3CD6-A4F2-32552D0ADD46}" name="Components">
+          <FILE id="Nappg4" name="LabelledButton.cpp" compile="1" resource="0"
+                file="Source/LabelledButton.cpp"/>
+          <FILE id="YTeqD8" name="LabelledButton.h" compile="0" resource="0"
+                file="Source/LabelledButton.h"/>
           <FILE id="uET2HS" name="LabelledChoiceSlider.cpp" compile="1" resource="0"
                 file="Source/LabelledChoiceSlider.cpp"/>
           <FILE id="sh6EFg" name="LabelledChoiceSlider.h" compile="0" resource="0"

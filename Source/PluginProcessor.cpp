@@ -36,58 +36,72 @@ EQAudioProcessor::EQAudioProcessor()
     // layout by calling the custom initParameterLayout method.
      , apvts (*this, &undoManager, "Parameters", initParameterLayout())
 {
+    apvts.addParameterListener("low-cut-power", this);
     apvts.addParameterListener("low-cut-freq", this);
     apvts.addParameterListener("low-cut-q", this);
 
+    apvts.addParameterListener("low-shelf-power", this);
     apvts.addParameterListener("low-shelf-freq", this);
     apvts.addParameterListener("low-shelf-q", this);
     apvts.addParameterListener("low-shelf-gain", this);
 
+    apvts.addParameterListener("peak-1-power", this);
     apvts.addParameterListener("peak-1-freq", this);
     apvts.addParameterListener("peak-1-q", this);
     apvts.addParameterListener("peak-1-gain", this);
 
+    apvts.addParameterListener("peak-2-power", this);
     apvts.addParameterListener("peak-2-freq", this);
     apvts.addParameterListener("peak-2-q", this);
     apvts.addParameterListener("peak-2-gain", this);
 
+    apvts.addParameterListener("peak-3-power", this);
     apvts.addParameterListener("peak-3-freq", this);
     apvts.addParameterListener("peak-3-q", this);
     apvts.addParameterListener("peak-3-gain", this);
 
+    apvts.addParameterListener("high-shelf-power", this);
     apvts.addParameterListener("high-shelf-freq", this);
     apvts.addParameterListener("high-shelf-q", this);
     apvts.addParameterListener("high-shelf-gain", this);
 
+    apvts.addParameterListener("high-cut-power", this);
     apvts.addParameterListener("high-cut-freq", this);
     apvts.addParameterListener("high-cut-q", this);
 }
 
 EQAudioProcessor::~EQAudioProcessor()
 {
+    apvts.removeParameterListener("low-cut-power", this);
     apvts.removeParameterListener("low-cut-freq", this);
     apvts.removeParameterListener("low-cut-q", this);
 
+    apvts.removeParameterListener("low-shelf-power", this);
     apvts.removeParameterListener("low-shelf-freq", this);
     apvts.removeParameterListener("low-shelf-q", this);
     apvts.removeParameterListener("low-shelf-gain", this);
 
+    apvts.removeParameterListener("peak-1-power", this);
     apvts.removeParameterListener("peak-1-freq", this);
     apvts.removeParameterListener("peak-1-q", this);
     apvts.removeParameterListener("peak-1-gain", this);
 
+    apvts.removeParameterListener("peak-2-power", this);
     apvts.removeParameterListener("peak-2-freq", this);
     apvts.removeParameterListener("peak-2-q", this);
     apvts.removeParameterListener("peak-2-gain", this);
 
+    apvts.removeParameterListener("peak-3-power", this);
     apvts.removeParameterListener("peak-3-freq", this);
     apvts.removeParameterListener("peak-3-q", this);
     apvts.removeParameterListener("peak-3-gain", this);
 
+    apvts.removeParameterListener("high-shelf-power", this);
     apvts.removeParameterListener("high-shelf-freq", this);
     apvts.removeParameterListener("high-shelf-q", this);
     apvts.removeParameterListener("high-shelf-gain", this);
 
+    apvts.removeParameterListener("high-cut-power", this);
     apvts.removeParameterListener("high-cut-freq", this);
     apvts.removeParameterListener("high-cut-q", this);
 }
@@ -174,6 +188,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParame
         //      - Default value
         // * Parameter ID provides the param ID and a version hint (for AU plugins)
         // * Normalisable Range provides a min, max, and interval value
+
+        // Adding the power parameter for each cut band
+        layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID(bandId + "power", 1),
+            bandName + "Power", 0));
         
         // Adding the frequency parameter for each cut band (in Hz)
         layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "freq", 1),
@@ -182,8 +200,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParame
             static_cast<float>(defaultFreqs.removeAndReturn(i * (defaultFreqs.size() - 1)))));
 
         // Adding the slope parameter for each cut band (this goes up in dB/Octave)
-        layout.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID(bandId + "slope", 1),
-            bandName + "Slope", juce::StringArray("6", "12", "18", "24", "36", "48"), 0));
+        //layout.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID(bandId + "slope", 1),
+        //    bandName + "Slope", juce::StringArray("6", "12", "18", "24", "36", "48"), 0));
 
         // Adding the q parameter for each peak (in q width)
         layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "q", 1),
@@ -198,6 +216,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParame
         // Defining the band name and ID for each shelf band in the format "{shelf type}-shelf-{parameter type}"
         juce::String bandName = cutShelfNames[i] + " Shelf ";
         juce::String bandId = bandName.replaceCharacter(' ', '-').toLowerCase();
+
+        // Adding the power parameter for each shelf band
+        layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID(bandId + "power", 1),
+            bandName + "Power", 0));
 
         // Adding the frequency parameter for each shelf (in Hz)
         layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "freq", 1),
@@ -225,6 +247,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout EQAudioProcessor::initParame
         juce::String bandName = "Peak " + juce::String(i) + " ";
         juce::String bandId = bandName.replaceCharacter(' ', '-').toLowerCase();
         
+        // Adding the power parameter for each peak band
+        layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID(bandId + "power", 1),
+            bandName + "Power", 0));
+
         // Adding the frequency parameter for each peak (in Hz)
         layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bandId + "freq", 1),
             bandName + "Frequency",
@@ -316,19 +342,24 @@ void EQAudioProcessor::parameterChanged(const juce::String& parameterID, float n
 {
     if (parameterID.startsWith("low-cut"))
     {
-        _eqProcessor.setLowCutParams(*apvts.getRawParameterValue("low-cut-freq"),
-        *apvts.getRawParameterValue("low-cut-q"));
+        _eqProcessor.setLowCutParams(
+            *apvts.getRawParameterValue("low-cut-power"),
+            *apvts.getRawParameterValue("low-cut-freq"),
+            *apvts.getRawParameterValue("low-cut-q"));
     }
     
     else if (parameterID.startsWith("low-shelf"))
     {
-        _eqProcessor.setLowShelfParams(*apvts.getRawParameterValue("low-shelf-freq"),
+        _eqProcessor.setLowShelfParams(
+            *apvts.getRawParameterValue("low-shelf-power"),
+            *apvts.getRawParameterValue("low-shelf-freq"),
             *apvts.getRawParameterValue("low-shelf-q"),
             *apvts.getRawParameterValue("low-shelf-gain"));
     }
     else if (parameterID.startsWith("peak-1"))
     {
         _eqProcessor.setPeakParams(0,
+            *apvts.getRawParameterValue("peak-1-power"),
             *apvts.getRawParameterValue("peak-1-freq"),
             *apvts.getRawParameterValue("peak-1-q"),
             *apvts.getRawParameterValue("peak-1-gain"));
@@ -336,6 +367,7 @@ void EQAudioProcessor::parameterChanged(const juce::String& parameterID, float n
     else if (parameterID.startsWith("peak-2"))
     {
         _eqProcessor.setPeakParams(1,
+            *apvts.getRawParameterValue("peak-2-power"),
             *apvts.getRawParameterValue("peak-2-freq"),
             *apvts.getRawParameterValue("peak-2-q"),
             *apvts.getRawParameterValue("peak-2-gain"));
@@ -343,19 +375,24 @@ void EQAudioProcessor::parameterChanged(const juce::String& parameterID, float n
     else if (parameterID.startsWith("peak-3"))
     {
         _eqProcessor.setPeakParams(2,
+            *apvts.getRawParameterValue("peak-3-power"),
             *apvts.getRawParameterValue("peak-3-freq"),
             *apvts.getRawParameterValue("peak-3-q"),
             *apvts.getRawParameterValue("peak-3-gain"));
     }
     else if (parameterID.startsWith("high-shelf"))
     {
-        _eqProcessor.setHighShelfParams(*apvts.getRawParameterValue("high-shelf-freq"),
+        _eqProcessor.setHighShelfParams(
+            *apvts.getRawParameterValue("high-shelf-power"),
+            *apvts.getRawParameterValue("high-shelf-freq"),
             *apvts.getRawParameterValue("high-shelf-q"),
             *apvts.getRawParameterValue("high-shelf-gain"));
     }
     else if (parameterID.startsWith("high-cut"))
     {
-        _eqProcessor.setHighCutParams(*apvts.getRawParameterValue("high-cut-freq"),
+        _eqProcessor.setHighCutParams(
+            *apvts.getRawParameterValue("high-cut-power"),
+            *apvts.getRawParameterValue("high-cut-freq"),
             *apvts.getRawParameterValue("high-cut-q"));
     }
 }
@@ -369,33 +406,44 @@ void EQAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 
     _eqProcessor.prepare(spec);
     
-    _eqProcessor.setLowCutParams(*apvts.getRawParameterValue("low-cut-freq"),
+    _eqProcessor.setLowCutParams(
+        *apvts.getRawParameterValue("low-cut-power"),
+        *apvts.getRawParameterValue("low-cut-freq"),
         *apvts.getRawParameterValue("low-cut-q"));
 
-    _eqProcessor.setLowShelfParams(*apvts.getRawParameterValue("low-shelf-freq"),
+    _eqProcessor.setLowShelfParams(
+        *apvts.getRawParameterValue("low-shelf-power"),
+        *apvts.getRawParameterValue("low-shelf-freq"),
         *apvts.getRawParameterValue("low-shelf-q"),
         *apvts.getRawParameterValue("low-shelf-gain"));
 
     _eqProcessor.setPeakParams(0,
+        *apvts.getRawParameterValue("peak-1-power"),
         *apvts.getRawParameterValue("peak-1-freq"),
         *apvts.getRawParameterValue("peak-1-q"),
         *apvts.getRawParameterValue("peak-1-gain"));
 
     _eqProcessor.setPeakParams(1,
+        *apvts.getRawParameterValue("peak-2-power"),
         *apvts.getRawParameterValue("peak-2-freq"),
         *apvts.getRawParameterValue("peak-2-q"),
         *apvts.getRawParameterValue("peak-2-gain"));
 
     _eqProcessor.setPeakParams(2,
+        *apvts.getRawParameterValue("peak-3-power"),
         *apvts.getRawParameterValue("peak-3-freq"),
         *apvts.getRawParameterValue("peak-3-q"),
         *apvts.getRawParameterValue("peak-3-gain"));
 
-    _eqProcessor.setHighShelfParams(*apvts.getRawParameterValue("high-shelf-freq"),
+    _eqProcessor.setHighShelfParams(
+        *apvts.getRawParameterValue("high-shelf-power"),
+        *apvts.getRawParameterValue("high-shelf-freq"),
         *apvts.getRawParameterValue("high-shelf-q"),
         *apvts.getRawParameterValue("high-shelf-gain"));
 
-    _eqProcessor.setHighCutParams(*apvts.getRawParameterValue("high-cut-freq"),
+    _eqProcessor.setHighCutParams(
+        *apvts.getRawParameterValue("high-cut-power"),
+        *apvts.getRawParameterValue("high-cut-freq"),
         *apvts.getRawParameterValue("high-cut-q"));
 
     _eqProcessor.reset();

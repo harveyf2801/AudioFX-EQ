@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\CustomLookAndFeel.cpp"/>
+    <ClCompile Include="..\..\Source\AbstractBand.cpp"/>
     <ClCompile Include="..\..\Source\HighShelfBand.cpp"/>
     <ClCompile Include="..\..\Source\LowShelfBand.cpp"/>
     <ClCompile Include="..\..\Source\PeakBand.cpp"/>
@@ -153,6 +154,7 @@
     <ClCompile Include="..\..\Source\ShelfBandParameters.cpp"/>
     <ClCompile Include="..\..\Source\CutBandParameters.cpp"/>
     <ClCompile Include="..\..\Source\GraphBackground.cpp"/>
+    <ClCompile Include="..\..\Source\LabelledButton.cpp"/>
     <ClCompile Include="..\..\Source\LabelledChoiceSlider.cpp"/>
     <ClCompile Include="..\..\Source\LabelledSlider.cpp"/>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
@@ -2530,6 +2532,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\CustomLookAndFeel.h"/>
+    <ClInclude Include="..\..\Source\AbstractBand.h"/>
     <ClInclude Include="..\..\Source\HighShelfBand.h"/>
     <ClInclude Include="..\..\Source\LowShelfBand.h"/>
     <ClInclude Include="..\..\Source\PeakBand.h"/>
@@ -2543,6 +2546,7 @@
     <ClInclude Include="..\..\Source\ShelfBandParameters.h"/>
     <ClInclude Include="..\..\Source\CutBandParameters.h"/>
     <ClInclude Include="..\..\Source\GraphBackground.h"/>
+    <ClInclude Include="..\..\Source\LabelledButton.h"/>
     <ClInclude Include="..\..\Source\LabelledChoiceSlider.h"/>
     <ClInclude Include="..\..\Source\LabelledSlider.h"/>
     <ClInclude Include="..\..\Source\PluginProcessor.h"/>

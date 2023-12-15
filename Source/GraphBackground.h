@@ -12,8 +12,10 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "PluginProcessor.h"
 
-class GraphBackground : public juce::Component
+class GraphBackground : public juce::Component,
+                        public juce::AudioProcessorValueTreeState::Listener
 {
 public:
     
@@ -22,7 +24,7 @@ public:
     //==============================================================================
     
     // Constructor / Destructor methods
-    GraphBackground (const juce::Array<float>& freqs, const juce::Array<float>& gains);
+    GraphBackground (const juce::Array<float>& freqs, const juce::Array<float>& gains, EQAudioProcessor& p);
     ~GraphBackground () override;
 
     //==============================================================================
@@ -31,17 +33,19 @@ public:
     void updateXMap(float xmin, float xmax);
     void updateYMap(float xmin, float xmax);
 
-    // Updating the drawing of the graphs background image
-    void drawBackground(juce::Rectangle<int> container);
-    
     // Updating the response curve of the graph
-    void plotResponseCurve(juce::Rectangle<int> container);
+    void drawResponseCurve();
+
+    // Updating the drawing of the graphs background image
+    void drawBackground();
     
     // Paints the current component image
     void paint (juce::Graphics& g) override;
     
     // Called when the component is resized, then updates all of the lines on the graph
     void resized () override;
+
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
     
     // All colour IDs for the component
     enum ColourIds
@@ -81,6 +85,12 @@ private:
     
     // Declaring the colour gradient component to draw lines with
     juce::ColourGradient _colourGradient;
+
+    juce::Path responseCurve;
+
+    EQAudioProcessor& audioProcessor;
+
+    juce::Rectangle<int> innerGraphContainer;
 
     //==============================================================================
     

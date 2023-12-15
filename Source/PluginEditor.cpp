@@ -12,13 +12,14 @@ EQAudioProcessorEditor::EQAudioProcessorEditor (EQAudioProcessor& p)
     // Initialising the spectral analyser object with the frequency ticks and gain ticks to display on the graph
     , _graphBackground (
         juce::Array<float>( 20.f, 40.f, 100.f, 200.f, 400.f, 600.f, 1000.f, 2000.f, 4000.f, 6000.f, 10000.f, 20000.f ),
-        juce::Array<float>( -30.f, -25.f, -20.f, -15.f, -10.f, -5.f, 0.f, 5.f, 10.f, 20.f )
+        juce::Array<float>( -30.f, -25.f, -20.f, -15.f, -10.f, -5.f, 0.f, 5.f, 10.f, 20.f ),
+        p
     )
     // Initialising the cut and shelf parameters, passing in a reference to the audio processor value tree state, and the ID for the parameter group
-    , _lowCutParams (_audioProcessor.apvts, "low-cut")
-    , _highCutParams (_audioProcessor.apvts, "high-cut")
-    , _lowShelfParams (_audioProcessor.apvts, "low-shelf")
-    , _highShelfParams (_audioProcessor.apvts, "high-shelf")
+    , _lowCutParams (_audioProcessor.apvts, "low-cut", "Low Cut")
+    , _highCutParams (_audioProcessor.apvts, "high-cut", "High Cut")
+    , _lowShelfParams (_audioProcessor.apvts, "low-shelf", "Low Shelf")
+    , _highShelfParams (_audioProcessor.apvts, "high-shelf", "High Shelf")
 {
     // Setting the custom look and feel
     setLookAndFeel (&_customLookAndFeel);
@@ -29,8 +30,9 @@ EQAudioProcessorEditor::EQAudioProcessorEditor (EQAudioProcessor& p)
     for (auto i = 1; i <= _audioProcessor.peakingBands; ++i)
     {
         juce::String id = "peak-" + juce::String(i);
+        juce::String bandName = "Peak " + juce::String(i);
 
-        auto peakBand = new PeakBandParameters(_audioProcessor.apvts, id);
+        auto peakBand = new PeakBandParameters(_audioProcessor.apvts, id, bandName);
 
         _peakBands.add(peakBand);
         

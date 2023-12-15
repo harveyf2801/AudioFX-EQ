@@ -11,7 +11,7 @@
 #include "GraphBackground.h"
 
 
-GraphBackground::GraphBackground(const juce::Array<float>& freqs, const juce::Array<float>& gains)
+GraphBackground::GraphBackground(const juce::Array<float>& freqs, const juce::Array<float>& gains, EQAudioProcessor& p)
     // Intialising all attributes
     : _freqs(freqs)
     , _gains(gains)
@@ -22,6 +22,7 @@ GraphBackground::GraphBackground(const juce::Array<float>& freqs, const juce::Ar
     , _minGain(_gains.getFirst())
     , _maxGain(_gains.getLast())
     , _colourGradient()
+    , audioProcessor(p)
 {
     // Setting the default colours for this component
     setColour(backgroundColourId, juce::Colour (16, 21, 24));
@@ -35,10 +36,63 @@ GraphBackground::GraphBackground(const juce::Array<float>& freqs, const juce::Ar
     _colourGradient.addColour(0.05, findColour(freqLineColourId));
     _colourGradient.addColour(0.95, findColour(freqLineColourId));
     _colourGradient.addColour(1.0, juce::Colours::transparentBlack);
+
+    audioProcessor.apvts.addParameterListener("low-cut-power", this);
+    audioProcessor.apvts.addParameterListener("low-cut-freq", this);
+    audioProcessor.apvts.addParameterListener("low-cut-q", this);
+    audioProcessor.apvts.addParameterListener("low-shelf-power", this);
+    audioProcessor.apvts.addParameterListener("low-shelf-freq", this);
+    audioProcessor.apvts.addParameterListener("low-shelf-q", this);
+    audioProcessor.apvts.addParameterListener("low-shelf-gain", this);
+    audioProcessor.apvts.addParameterListener("peak-1-power", this);
+    audioProcessor.apvts.addParameterListener("peak-1-freq", this);
+    audioProcessor.apvts.addParameterListener("peak-1-q", this);
+    audioProcessor.apvts.addParameterListener("peak-1-gain", this);
+    audioProcessor.apvts.addParameterListener("peak-2-power", this);
+    audioProcessor.apvts.addParameterListener("peak-2-freq", this);
+    audioProcessor.apvts.addParameterListener("peak-2-q", this);
+    audioProcessor.apvts.addParameterListener("peak-2-gain", this);
+    audioProcessor.apvts.addParameterListener("peak-3-power", this);
+    audioProcessor.apvts.addParameterListener("peak-3-freq", this);
+    audioProcessor.apvts.addParameterListener("peak-3-q", this);
+    audioProcessor.apvts.addParameterListener("peak-3-gain", this);
+    audioProcessor.apvts.addParameterListener("high-shelf-power", this);
+    audioProcessor.apvts.addParameterListener("high-shelf-freq", this);
+    audioProcessor.apvts.addParameterListener("high-shelf-q", this);
+    audioProcessor.apvts.addParameterListener("high-shelf-gain", this);
+    audioProcessor.apvts.addParameterListener("high-cut-power", this);
+    audioProcessor.apvts.addParameterListener("high-cut-freq", this);
+    audioProcessor.apvts.addParameterListener("high-cut-q", this);
 }
 
 GraphBackground::~GraphBackground()
 {
+    audioProcessor.apvts.removeParameterListener("low-cut-power", this);
+    audioProcessor.apvts.removeParameterListener("low-cut-freq", this);
+    audioProcessor.apvts.removeParameterListener("low-cut-q", this);
+    audioProcessor.apvts.removeParameterListener("low-shelf-power", this);
+    audioProcessor.apvts.removeParameterListener("low-shelf-freq", this);
+    audioProcessor.apvts.removeParameterListener("low-shelf-q", this);
+    audioProcessor.apvts.removeParameterListener("low-shelf-gain", this);
+    audioProcessor.apvts.removeParameterListener("peak-1-power", this);
+    audioProcessor.apvts.removeParameterListener("peak-1-freq", this);
+    audioProcessor.apvts.removeParameterListener("peak-1-q", this);
+    audioProcessor.apvts.removeParameterListener("peak-1-gain", this);
+    audioProcessor.apvts.removeParameterListener("peak-2-power", this);
+    audioProcessor.apvts.removeParameterListener("peak-2-freq", this);
+    audioProcessor.apvts.removeParameterListener("peak-2-q", this);
+    audioProcessor.apvts.removeParameterListener("peak-2-gain", this);
+    audioProcessor.apvts.removeParameterListener("peak-3-power", this);
+    audioProcessor.apvts.removeParameterListener("peak-3-freq", this);
+    audioProcessor.apvts.removeParameterListener("peak-3-q", this);
+    audioProcessor.apvts.removeParameterListener("peak-3-gain", this);
+    audioProcessor.apvts.removeParameterListener("high-shelf-power", this);
+    audioProcessor.apvts.removeParameterListener("high-shelf-freq", this);
+    audioProcessor.apvts.removeParameterListener("high-shelf-q", this);
+    audioProcessor.apvts.removeParameterListener("high-shelf-gain", this);
+    audioProcessor.apvts.removeParameterListener("high-cut-power", this);
+    audioProcessor.apvts.removeParameterListener("high-cut-freq", this);
+    audioProcessor.apvts.removeParameterListener("high-cut-q", this);
 }
 
 void GraphBackground::updateXMap(float xmin, float xmax)
@@ -60,20 +114,85 @@ void GraphBackground::updateYMap(float ymin, float ymax)
     }
 }
 
-void GraphBackground::plotResponseCurve(juce::Rectangle<int> /*container*/)
-{
-
-}
-
-void GraphBackground::drawBackground(juce::Rectangle<int> container)
+void GraphBackground::drawResponseCurve()
 {
     // Defining some temp variables to help with dimentions
-    auto left = container.getX();
-    auto right = container.getRight();
-    auto top = container.getY();
-    auto bottom = container.getBottom();
-    auto width = container.getWidth();
-    /*auto height = container.getHeight();*/
+    auto responseArea = innerGraphContainer;
+
+    auto w = responseArea.getWidth();
+
+    // Get the coefficients from the EQProcessor
+    auto highCutCoefficients = audioProcessor._eqProcessor.highCutBand.getCoefficients();
+    auto lowCutCoefficients = audioProcessor._eqProcessor.lowCutBand.getCoefficients();
+
+    auto sampleRate = audioProcessor.getSampleRate();
+    std::vector<double> mags;
+
+    mags.resize(w);
+
+    for (int i = 0; i < w; ++i)
+    {
+        double mag = 1.f;
+        auto freq = juce::mapToLog10(double(i) / double(w), 20.0, 20000.0);
+
+        if (!audioProcessor._eqProcessor.peakBand1.isBypassed())
+            mag *= audioProcessor._eqProcessor.peakBand1.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
+
+        if (!audioProcessor._eqProcessor.peakBand2.isBypassed())
+            mag *= audioProcessor._eqProcessor.peakBand2.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
+
+        if (!audioProcessor._eqProcessor.peakBand3.isBypassed())
+            mag *= audioProcessor._eqProcessor.peakBand3.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
+
+        if (!audioProcessor._eqProcessor.lowCutBand.isBypassed())
+        {
+            mag *= audioProcessor._eqProcessor.lowCutBand.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
+        }
+
+        if (!audioProcessor._eqProcessor.lowShelfBand.isBypassed())
+        {
+            mag *= audioProcessor._eqProcessor.lowShelfBand.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
+        }
+
+        if (!audioProcessor._eqProcessor.highShelfBand.isBypassed())
+        {
+            mag *= audioProcessor._eqProcessor.highShelfBand.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
+        }
+
+        if (!audioProcessor._eqProcessor.highCutBand.isBypassed())
+        {
+            mag *= audioProcessor._eqProcessor.highCutBand.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
+        }
+
+        mags[i] = juce::Decibels::gainToDecibels(mag);
+    }
+
+    responseCurve.clear();
+
+    const double outputMin = responseArea.getBottom();
+    const double outputMax = responseArea.getY();
+    auto map = [outputMin, outputMax](double input)
+        {
+            return juce::jmap(input, -30.0, 20.0, outputMin, outputMax);
+        };
+
+    responseCurve.startNewSubPath(responseArea.getX(), map(mags.front()));
+
+    for (size_t i = 1; i < mags.size(); ++i)
+    {
+        responseCurve.lineTo(responseArea.getX() + i, map(mags[i]));
+    }
+}
+
+void GraphBackground::drawBackground()
+{
+    // Defining some temp variables to help with dimentions
+    auto left = innerGraphContainer.getX();
+    auto right = innerGraphContainer.getRight();
+    auto top = innerGraphContainer.getY();
+    auto bottom = innerGraphContainer.getBottom();
+    auto width = innerGraphContainer.getWidth();
+    auto height = innerGraphContainer.getHeight();
 
     // Creating a background image to draw on
     background = juce::Image(juce::Image::ARGB, getLocalBounds().getWidth(), getLocalBounds().getHeight(), true);
@@ -128,8 +247,8 @@ void GraphBackground::drawBackground(juce::Rectangle<int> container)
     // Drawing all vertical lines
 
     // Setting the gradient points to start at the left and end at the right
-    _colourGradient.point1 = juce::Point<float>(static_cast<float>(left), static_cast<float>(container.getCentreY()));
-    _colourGradient.point2 = juce::Point<float>(static_cast<float>(right), static_cast<float>(container.getCentreY()));
+    _colourGradient.point1 = juce::Point<float>(static_cast<float>(left), static_cast<float>(innerGraphContainer.getCentreY()));
+    _colourGradient.point2 = juce::Point<float>(static_cast<float>(right), static_cast<float>(innerGraphContainer.getCentreY()));
 
     // Itterating through each gain tick
     for (auto i = 0; i < _gains.size(); ++i)
@@ -188,6 +307,10 @@ void GraphBackground::paint(juce::Graphics& g)
 {
     // Redrawing the image
     g.drawImage(background, getLocalBounds().toFloat());
+    drawResponseCurve();
+
+    g.setColour(juce::Colours::white);
+    g.strokePath(responseCurve, juce::PathStrokeType(2.f));
 }
 
 void GraphBackground::resized()
@@ -196,12 +319,17 @@ void GraphBackground::resized()
     auto bounds = getLocalBounds();
 
     // Reducing the bounds for the main graph container
-    auto graphContainer = bounds.reduced(45, 30);
+    innerGraphContainer = bounds.reduced(45, 30);
 
     // Updating the X and Y maps for drawing the lines
-    updateXMap(static_cast<float>(graphContainer.getX()), static_cast<float>(graphContainer.getWidth()));
-    updateYMap(static_cast<float>(graphContainer.getBottom()), static_cast<float>(graphContainer.getY()));
+    updateXMap(static_cast<float>(innerGraphContainer.getX()), static_cast<float>(innerGraphContainer.getWidth()));
+    updateYMap(static_cast<float>(innerGraphContainer.getBottom()), static_cast<float>(innerGraphContainer.getY()));
 
     // Redraw the background image
-    drawBackground(graphContainer);
+    drawBackground();
+}
+
+void GraphBackground::parameterChanged(const juce::String& parameterID, float newValue)
+{
+    repaint();
 }

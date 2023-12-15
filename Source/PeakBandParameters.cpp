@@ -12,12 +12,13 @@
 
 //==============================================================================
 
-PeakBandParameters::PeakBandParameters(juce::AudioProcessorValueTreeState& stateToUse, const juce::String parameterID)
+PeakBandParameters::PeakBandParameters(juce::AudioProcessorValueTreeState& stateToUse, const juce::String parameterID, const juce::String bandName)
     // Passing in the constructor parameters to initialise the peaking band slider components.
     // These parameters include:
     // * The apvts state to link the slider attatchment to the slider
     // * The parameter ID for each slider
-    : _freqSlider(stateToUse, parameterID + "-freq")
+    : _powerButton(stateToUse, parameterID + "-power")
+    , _freqSlider(stateToUse, parameterID + "-freq")
     , _gainSlider(stateToUse, parameterID + "-gain")
     , _qSlider(stateToUse, parameterID + "-q")
 {
@@ -25,10 +26,17 @@ PeakBandParameters::PeakBandParameters(juce::AudioProcessorValueTreeState& state
     _freqSlider.setTextValueSuffix(" Hz");
     _gainSlider.setTextValueSuffix(" dB");
     
-    // Displaying all slider parameters
+    // Setting the text for the label
+    // * Don't send notification means that a listener won't need to be be notified of any changes to this text as it will be static
+    _label.setText(bandName, juce::dontSendNotification);
+    _label.setJustificationType(juce::Justification::centred);
+
+    // Displaying all parameters
+    addAndMakeVisible(_powerButton);
     addAndMakeVisible(_freqSlider);
     addAndMakeVisible(_gainSlider);
     addAndMakeVisible(_qSlider);
+    addAndMakeVisible(_label);
 }
 
 PeakBandParameters::~PeakBandParameters()
@@ -55,9 +63,11 @@ void PeakBandParameters::resized()
 
     // Adding each element to the parameter container
     peakParamFlexContainer.items.add(
-        juce::FlexItem (_freqSlider).withFlex (0.8f),
-        juce::FlexItem (_gainSlider).withFlex (0.8f),
-        juce::FlexItem (_qSlider).withFlex (0.8f)
+        juce::FlexItem (_powerButton).withFlex (0.3f).withMargin(juce::FlexItem::Margin(5, 5, 5, 5)), // margin for flex gap
+        juce::FlexItem (_label).withFlex(0.3f).withMargin(juce::FlexItem::Margin(5, 5, 5, 5)), // margin for flex gap
+        juce::FlexItem (_freqSlider).withFlex (0.8f).withMargin(juce::FlexItem::Margin(5, 5, 5, 5)), // margin for flex gap
+        juce::FlexItem (_gainSlider).withFlex (0.8f).withMargin(juce::FlexItem::Margin(5, 5, 5, 5)), // margin for flex gap
+        juce::FlexItem (_qSlider).withFlex (0.8f).withMargin(juce::FlexItem::Margin(5, 5, 5, 5)) // margin for flex gap
     );
     
     // Applying the layout on the bounds of the component

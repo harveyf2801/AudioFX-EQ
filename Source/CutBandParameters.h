@@ -12,8 +12,9 @@
 
 #include <JuceHeader.h>
 
+#include "LabelledButton.h"
 #include "LabelledSlider.h"
-#include "LabelledChoiceSlider.h"
+//#include "LabelledChoiceSlider.h"
 
 //==============================================================================
 
@@ -26,7 +27,7 @@ public:
     //==============================================================================
     
     // Constructor / Destructor methods
-    CutBandParameters(juce::AudioProcessorValueTreeState& stateToUse, const juce::String parameterID);
+    CutBandParameters(juce::AudioProcessorValueTreeState& stateToUse, const juce::String parameterID, const juce::String bandName);
     ~CutBandParameters() override;
 
     //==============================================================================
@@ -42,8 +43,10 @@ private:
     //==============================================================================
     
     // Declaring all cut band parameters to contain in this section
+    juce::Label _label;
+    LabelledButton _powerButton;
     LabelledSlider _freqSlider;
-    LabelledChoiceSlider _slopeSlider;
+    //LabelledChoiceSlider _slopeSlider;
     LabelledSlider _qSlider;
 
     //==============================================================================

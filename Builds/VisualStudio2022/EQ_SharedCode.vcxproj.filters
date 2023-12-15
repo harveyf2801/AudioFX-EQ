@@ -643,6 +643,9 @@
     <ClCompile Include="..\..\Source\CustomLookAndFeel.cpp">
       <Filter>EQ\Source\LookAndFeel</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\AbstractBand.cpp">
+      <Filter>EQ\Source\Audio\EQBands</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\HighShelfBand.cpp">
       <Filter>EQ\Source\Audio\EQBands</Filter>
     </ClCompile>
@@ -681,6 +684,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\GraphBackground.cpp">
       <Filter>EQ\Source\GUI\EQComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\LabelledButton.cpp">
+      <Filter>EQ\Source\GUI\Components</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\LabelledChoiceSlider.cpp">
       <Filter>EQ\Source\GUI\Components</Filter>
@@ -3240,6 +3246,9 @@
     <ClInclude Include="..\..\Source\CustomLookAndFeel.h">
       <Filter>EQ\Source\LookAndFeel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\AbstractBand.h">
+      <Filter>EQ\Source\Audio\EQBands</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\HighShelfBand.h">
       <Filter>EQ\Source\Audio\EQBands</Filter>
     </ClInclude>
@@ -3278,6 +3287,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\GraphBackground.h">
       <Filter>EQ\Source\GUI\EQComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\LabelledButton.h">
+      <Filter>EQ\Source\GUI\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\LabelledChoiceSlider.h">
       <Filter>EQ\Source\GUI\Components</Filter>

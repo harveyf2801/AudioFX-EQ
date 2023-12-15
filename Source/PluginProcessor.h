@@ -108,6 +108,8 @@ public:
     // Declaring the Audio Processor Value Tree State
     juce::AudioProcessorValueTreeState apvts;
 
+    EQProcessor _eqProcessor;
+
 private:
     
     // Declaring all private methods and attributes
@@ -116,10 +118,6 @@ private:
     
     // Declaring the EQ processor which will be used to perform
     // the audio processing of the EQ plugin.
-     
-    EQProcessor _eqProcessor;
-    //LowCutBand lowCutBand;
-    //juce::dsp::ProcessorDuplicator <juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> filter;
 
     //==============================================================================
     

@@ -10,21 +10,17 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include "AbstractBand.h"
 
 //==============================================================================
 
-class HighShelfBand
+class HighShelfBand : public AbstractBand
 {
 public:
     HighShelfBand();
     ~HighShelfBand();
 
-    juce::dsp::IIR::Coefficients<float>::Ptr getCoefficients(float frequency, float Q, float gain, float sampleRate);
-
-private:
-
-    // Declaring all private methods and attributes
-
-    //==============================================================================
+    // Implementation of the abstract function
+    void updateCoefficients(float frequency, float Q, float gain, float sampleRate);
 
 };

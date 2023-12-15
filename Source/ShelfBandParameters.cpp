@@ -10,8 +10,8 @@
 
 //==============================================================================
 
-ShelfBandParameters::ShelfBandParameters(juce::AudioProcessorValueTreeState& stateToUse, const juce::String parameterID)
-: PeakBandParameters(stateToUse, parameterID)
+ShelfBandParameters::ShelfBandParameters(juce::AudioProcessorValueTreeState& stateToUse, const juce::String parameterID, const juce::String bandName)
+: PeakBandParameters(stateToUse, parameterID, bandName)
 {
 }
 
