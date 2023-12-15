@@ -41,12 +41,11 @@ public:
 
     void process(const juce::dsp::ProcessContextReplacing<float>& context) noexcept;
 
-    //void updateFilter();
-
     void reset() noexcept;
 
 private:
 
+    // Enumerated values for the eq band ID's
     enum _bandIndex
     {
         lowCutIndex,
@@ -58,17 +57,21 @@ private:
         peak3Index
     };
 
-    double _sampleRate;
+    double _sampleRate = 44100; // setting sample rate at default 44100
+                                // this gets set in the prepare method
 
+    // Declaring the eq band objects
     LowCutBand _lowCutBand;
     LowShelfBand _lowShelfBand;
     PeakBand _peakBand;
     HighShelfBand _highShelfBand;
     HighCutBand _highCutBand;
 
+    // Creating a processor duplicator to process multiple IIR filters at once
     using StereoIIRFilter = juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>,
         juce::dsp::IIR::Coefficients<float>>;
 
+    // Adding these processors together in a processor chain
     juce::dsp::ProcessorChain<StereoIIRFilter, StereoIIRFilter,
                               StereoIIRFilter, StereoIIRFilter,
                               StereoIIRFilter, StereoIIRFilter,
