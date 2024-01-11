@@ -35,8 +35,11 @@ public:
     void updateXMap(float xmin, float xmax);
     void updateYMap(float xmin, float xmax);
 
-    // Updating the response curve of the graph
-    void drawResponseCurve();
+    // Updating the magnitude response curve of the graph
+    void drawMagnitudeResponseCurve();
+
+    // Updating the phase response curve of the graph
+    void drawPhaseResponseCurve();
 
     // Updating the drawing of the graphs background image
     void drawBackground();
@@ -112,7 +115,10 @@ private:
     juce::Rectangle<int> innerGraphContainer;
 
     // Default value set for showing the analysis
-    bool shouldShowFFTAnalysis = true;
+    bool shouldShowFFTAnalysis = false;
+
+    // Default value set for showing the phase response
+    bool shouldShowPhaseResponse = true;
 
     // Declaring two paths for the left and right input channels
     // to draw the analysis

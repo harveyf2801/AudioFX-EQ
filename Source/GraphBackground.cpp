@@ -134,7 +134,7 @@ void GraphBackground::updateYMap(float ymin, float ymax)
     }
 }
 
-void GraphBackground::drawResponseCurve()
+void GraphBackground::drawMagnitudeResponseCurve()
 {
     // Defining some temp variables to help with dimentions
     auto w = innerGraphContainer.getWidth();
@@ -212,6 +212,87 @@ void GraphBackground::drawResponseCurve()
     for (size_t i = 1; i < mags.size(); ++i)
     {
         responseCurve.lineTo(innerGraphContainer.getX() + i, map(mags[i]));
+    }
+}
+
+void GraphBackground::drawPhaseResponseCurve()
+{
+    // Defining some temp variables to help with dimentions
+    auto w = innerGraphContainer.getWidth();
+
+    // Getting the sample rate
+    auto sampleRate = audioProcessor.getSampleRate();
+
+    // Creating a vector of phase values and setting the size equal to the width
+    std::vector<double> phases;
+    phases.resize(w);
+
+    // Itterating through the width of the innerGraphContainer
+    for (int i = 0; i < w; ++i)
+    {
+        // Calculating the mapped frequency between the minFreq and maxFreq with a logged skew
+        double phase = 0.f;
+        auto freq = juce::mapToLog10(double(i) / double(w), double(_minFreq), double(_maxFreq));
+
+        // For all parameters, checking if they are currently bypassed or not
+        // If they are bypassed then don't include them in the response plot
+        // However, if not bypassed, apply the phase at the given frequency to the phases vector ...
+
+        // Calculating phase for peaks
+        if (!audioProcessor.eqProcessor.peakBand1.isBypassed())
+            phase += audioProcessor.eqProcessor.peakBand1.getCoefficients()->getPhaseForFrequency(freq, sampleRate);
+
+        if (!audioProcessor.eqProcessor.peakBand2.isBypassed())
+            phase += audioProcessor.eqProcessor.peakBand2.getCoefficients()->getPhaseForFrequency(freq, sampleRate);
+
+        if (!audioProcessor.eqProcessor.peakBand3.isBypassed())
+            phase += audioProcessor.eqProcessor.peakBand3.getCoefficients()->getPhaseForFrequency(freq, sampleRate);
+
+        // Calculating phase for cuts and shelves
+        if (!audioProcessor.eqProcessor.lowCutBand.isBypassed())
+        {
+            phase += audioProcessor.eqProcessor.lowCutBand.getCoefficients()->getPhaseForFrequency(freq, sampleRate);
+        }
+
+        if (!audioProcessor.eqProcessor.lowShelfBand.isBypassed())
+        {
+            phase += audioProcessor.eqProcessor.lowShelfBand.getCoefficients()->getPhaseForFrequency(freq, sampleRate);
+        }
+
+        if (!audioProcessor.eqProcessor.highShelfBand.isBypassed())
+        {
+            phase += audioProcessor.eqProcessor.highShelfBand.getCoefficients()->getPhaseForFrequency(freq, sampleRate);
+        }
+
+        if (!audioProcessor.eqProcessor.highCutBand.isBypassed())
+        {
+            phase += audioProcessor.eqProcessor.highCutBand.getCoefficients()->getPhaseForFrequency(freq, sampleRate);
+        }
+
+        // Converting the gain values to decibels
+        phases[i] = juce::radiansToDegrees(phase);
+    }
+
+    // Clearing the current response curve to draw a new path 
+    responseCurve.clear();
+
+    // Declaring our lambda variables as const
+    const double outputMin = innerGraphContainer.getBottom();
+    const double outputMax = innerGraphContainer.getY();
+    const double minPhase = -360;
+    const double maxPhase = 360;
+    // Applying a map with the limits of the innerGraphContainer
+    auto map = [outputMin, outputMax, minPhase, maxPhase](double input)
+        {
+            return juce::jmap(input, minPhase, maxPhase, outputMin, outputMax);
+        };
+
+    // Starting the new path and plotting the path with the mapping lambda function created above
+    responseCurve.startNewSubPath(innerGraphContainer.getX(), map(phases.front()));
+
+    for (size_t i = 1; i < phases.size(); ++i)
+    {
+        responseCurve.lineTo(innerGraphContainer.getX() + i, map(phases[i]));
     }
 }
 
@@ -338,7 +419,8 @@ void GraphBackground::paint(juce::Graphics& g)
 {
     // Redrawing the image
     g.drawImage(background, getLocalBounds().toFloat());
-    drawResponseCurve();
+    //drawMagnitudeResponseCurve();
+    drawPhaseResponseCurve();
 
     // Only plot the analysis lines if enabled
     if (shouldShowFFTAnalysis)
