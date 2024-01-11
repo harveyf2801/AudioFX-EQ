@@ -23,6 +23,8 @@ GraphBackground::GraphBackground(const juce::Array<float>& freqs, const juce::Ar
     , _maxGain(_gains.getLast())
     , _colourGradient()
     , audioProcessor(p)
+    , leftPathProducer(audioProcessor.leftChannelFifo)
+    , rightPathProducer(audioProcessor.rightChannelFifo)
 {
     // Setting the default colours for this component
     setColour(backgroundColourId, juce::Colour (16, 21, 24));
@@ -30,66 +32,84 @@ GraphBackground::GraphBackground(const juce::Array<float>& freqs, const juce::Ar
     setColour(gainLineColourId, juce::Colour (41, 47, 47));
     setColour(gain0LineColourId, juce::Colour (141, 149, 152));
     setColour(labelColourId, juce::Colour (141, 149, 152));
+    setColour(analysisLeftColourId, juce::Colour(255, 43, 43));
+    setColour(analysisRightColourId, juce::Colour(190, 62, 230));
     
     // Creating the colour gradient
     _colourGradient.addColour(0, juce::Colours::transparentBlack);
     _colourGradient.addColour(0.05, findColour(freqLineColourId));
     _colourGradient.addColour(0.95, findColour(freqLineColourId));
     _colourGradient.addColour(1.0, juce::Colours::transparentBlack);
-
+    
+    // Adding a listener to all parameters
     audioProcessor.apvts.addParameterListener("low-cut-power", this);
     audioProcessor.apvts.addParameterListener("low-cut-freq", this);
     audioProcessor.apvts.addParameterListener("low-cut-q", this);
+
     audioProcessor.apvts.addParameterListener("low-shelf-power", this);
     audioProcessor.apvts.addParameterListener("low-shelf-freq", this);
     audioProcessor.apvts.addParameterListener("low-shelf-q", this);
     audioProcessor.apvts.addParameterListener("low-shelf-gain", this);
+
     audioProcessor.apvts.addParameterListener("peak-1-power", this);
     audioProcessor.apvts.addParameterListener("peak-1-freq", this);
     audioProcessor.apvts.addParameterListener("peak-1-q", this);
     audioProcessor.apvts.addParameterListener("peak-1-gain", this);
+
     audioProcessor.apvts.addParameterListener("peak-2-power", this);
     audioProcessor.apvts.addParameterListener("peak-2-freq", this);
     audioProcessor.apvts.addParameterListener("peak-2-q", this);
     audioProcessor.apvts.addParameterListener("peak-2-gain", this);
+
     audioProcessor.apvts.addParameterListener("peak-3-power", this);
     audioProcessor.apvts.addParameterListener("peak-3-freq", this);
     audioProcessor.apvts.addParameterListener("peak-3-q", this);
     audioProcessor.apvts.addParameterListener("peak-3-gain", this);
+
     audioProcessor.apvts.addParameterListener("high-shelf-power", this);
     audioProcessor.apvts.addParameterListener("high-shelf-freq", this);
     audioProcessor.apvts.addParameterListener("high-shelf-q", this);
     audioProcessor.apvts.addParameterListener("high-shelf-gain", this);
+
     audioProcessor.apvts.addParameterListener("high-cut-power", this);
     audioProcessor.apvts.addParameterListener("high-cut-freq", this);
     audioProcessor.apvts.addParameterListener("high-cut-q", this);
+
+    startTimerHz(60);
 }
 
 GraphBackground::~GraphBackground()
 {
+    // Removing all listeners from this object to the parameters
     audioProcessor.apvts.removeParameterListener("low-cut-power", this);
     audioProcessor.apvts.removeParameterListener("low-cut-freq", this);
     audioProcessor.apvts.removeParameterListener("low-cut-q", this);
+
     audioProcessor.apvts.removeParameterListener("low-shelf-power", this);
     audioProcessor.apvts.removeParameterListener("low-shelf-freq", this);
     audioProcessor.apvts.removeParameterListener("low-shelf-q", this);
     audioProcessor.apvts.removeParameterListener("low-shelf-gain", this);
+
     audioProcessor.apvts.removeParameterListener("peak-1-power", this);
     audioProcessor.apvts.removeParameterListener("peak-1-freq", this);
     audioProcessor.apvts.removeParameterListener("peak-1-q", this);
     audioProcessor.apvts.removeParameterListener("peak-1-gain", this);
+
     audioProcessor.apvts.removeParameterListener("peak-2-power", this);
     audioProcessor.apvts.removeParameterListener("peak-2-freq", this);
     audioProcessor.apvts.removeParameterListener("peak-2-q", this);
     audioProcessor.apvts.removeParameterListener("peak-2-gain", this);
+
     audioProcessor.apvts.removeParameterListener("peak-3-power", this);
     audioProcessor.apvts.removeParameterListener("peak-3-freq", this);
     audioProcessor.apvts.removeParameterListener("peak-3-q", this);
     audioProcessor.apvts.removeParameterListener("peak-3-gain", this);
+
     audioProcessor.apvts.removeParameterListener("high-shelf-power", this);
     audioProcessor.apvts.removeParameterListener("high-shelf-freq", this);
     audioProcessor.apvts.removeParameterListener("high-shelf-q", this);
     audioProcessor.apvts.removeParameterListener("high-shelf-gain", this);
+
     audioProcessor.apvts.removeParameterListener("high-cut-power", this);
     audioProcessor.apvts.removeParameterListener("high-cut-freq", this);
     audioProcessor.apvts.removeParameterListener("high-cut-q", this);
@@ -117,70 +137,81 @@ void GraphBackground::updateYMap(float ymin, float ymax)
 void GraphBackground::drawResponseCurve()
 {
     // Defining some temp variables to help with dimentions
-    auto responseArea = innerGraphContainer;
+    auto w = innerGraphContainer.getWidth();
 
-    auto w = responseArea.getWidth();
-
-    // Get the coefficients from the EQProcessor
-    auto highCutCoefficients = audioProcessor._eqProcessor.highCutBand.getCoefficients();
-    auto lowCutCoefficients = audioProcessor._eqProcessor.lowCutBand.getCoefficients();
-
+    // Getting the sample rate
     auto sampleRate = audioProcessor.getSampleRate();
-    std::vector<double> mags;
 
+    // Creating a vector of magnitude values and setting the size equal to the width
+    std::vector<double> mags;
     mags.resize(w);
 
+    // Itterating through the width of the innerGraphContainer
     for (int i = 0; i < w; ++i)
     {
+        // Calculating the mapped frequency between the minFreq and maxFreq with a logged skew
         double mag = 1.f;
-        auto freq = juce::mapToLog10(double(i) / double(w), 20.0, 20000.0);
+        auto freq = juce::mapToLog10(double(i) / double(w), double(_minFreq), double(_maxFreq));
 
-        if (!audioProcessor._eqProcessor.peakBand1.isBypassed())
-            mag *= audioProcessor._eqProcessor.peakBand1.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
+        // For all parameters, checking if they are currently bypassed or not
+        // If they are bypassed then don't include them in the response plot
+        // However, if not bypassed, apply the magitude at the given frequency to the mags vector ...
 
-        if (!audioProcessor._eqProcessor.peakBand2.isBypassed())
-            mag *= audioProcessor._eqProcessor.peakBand2.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
+        // Calculating magnitude for peaks
+        if (!audioProcessor.eqProcessor.peakBand1.isBypassed())
+            mag *= audioProcessor.eqProcessor.peakBand1.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
 
-        if (!audioProcessor._eqProcessor.peakBand3.isBypassed())
-            mag *= audioProcessor._eqProcessor.peakBand3.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
+        if (!audioProcessor.eqProcessor.peakBand2.isBypassed())
+            mag *= audioProcessor.eqProcessor.peakBand2.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
 
-        if (!audioProcessor._eqProcessor.lowCutBand.isBypassed())
+        if (!audioProcessor.eqProcessor.peakBand3.isBypassed())
+            mag *= audioProcessor.eqProcessor.peakBand3.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
+
+        // Calculating magnitude for cuts and shelves
+        if (!audioProcessor.eqProcessor.lowCutBand.isBypassed())
         {
-            mag *= audioProcessor._eqProcessor.lowCutBand.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
+            mag *= audioProcessor.eqProcessor.lowCutBand.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
         }
 
-        if (!audioProcessor._eqProcessor.lowShelfBand.isBypassed())
+        if (!audioProcessor.eqProcessor.lowShelfBand.isBypassed())
         {
-            mag *= audioProcessor._eqProcessor.lowShelfBand.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
+            mag *= audioProcessor.eqProcessor.lowShelfBand.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
         }
 
-        if (!audioProcessor._eqProcessor.highShelfBand.isBypassed())
+        if (!audioProcessor.eqProcessor.highShelfBand.isBypassed())
         {
-            mag *= audioProcessor._eqProcessor.highShelfBand.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
+            mag *= audioProcessor.eqProcessor.highShelfBand.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
         }
 
-        if (!audioProcessor._eqProcessor.highCutBand.isBypassed())
+        if (!audioProcessor.eqProcessor.highCutBand.isBypassed())
         {
-            mag *= audioProcessor._eqProcessor.highCutBand.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
+            mag *= audioProcessor.eqProcessor.highCutBand.getCoefficients()->getMagnitudeForFrequency(freq, sampleRate);
         }
 
+        // Converting the gain values to decibels
         mags[i] = juce::Decibels::gainToDecibels(mag);
     }
 
+    // Clearing the current response curve to draw a new path 
     responseCurve.clear();
 
-    const double outputMin = responseArea.getBottom();
-    const double outputMax = responseArea.getY();
-    auto map = [outputMin, outputMax](double input)
+    // Declaring our lambda variables as const
+    const double outputMin = innerGraphContainer.getBottom();
+    const double outputMax = innerGraphContainer.getY();
+    const double minGain = _minGain;
+    const double maxGain = _maxGain;
+    // Applying a map with the limits of the innerGraphContainer
+    auto map = [outputMin, outputMax, minGain, maxGain](double input)
         {
-            return juce::jmap(input, -30.0, 20.0, outputMin, outputMax);
+            return juce::jmap(input, minGain, maxGain, outputMin, outputMax);
         };
 
-    responseCurve.startNewSubPath(responseArea.getX(), map(mags.front()));
+    // Starting the new path and plotting the path with the mapping lambda function created above
+    responseCurve.startNewSubPath(innerGraphContainer.getX(), map(mags.front()));
 
     for (size_t i = 1; i < mags.size(); ++i)
     {
-        responseCurve.lineTo(responseArea.getX() + i, map(mags[i]));
+        responseCurve.lineTo(innerGraphContainer.getX() + i, map(mags[i]));
     }
 }
 
@@ -309,6 +340,25 @@ void GraphBackground::paint(juce::Graphics& g)
     g.drawImage(background, getLocalBounds().toFloat());
     drawResponseCurve();
 
+    // Only plot the analysis lines if enabled
+    if (shouldShowFFTAnalysis)
+    {
+        // Calculating the FFT lines by getting the path and then transforming the path to fit within the innerGraphContainer
+        auto leftChannelFFTPath = leftPathProducer.getPath();
+        leftChannelFFTPath.applyTransform(juce::AffineTransform().translation(innerGraphContainer.getX(), innerGraphContainer.getY()));
+
+        // Applying the custom colour ID assigned
+        g.setColour(findColour(ColourIds::analysisLeftColourId));
+        g.strokePath(leftChannelFFTPath, juce::PathStrokeType(1.f));
+
+        auto rightChannelFFTPath = rightPathProducer.getPath();
+        rightChannelFFTPath.applyTransform(juce::AffineTransform().translation(innerGraphContainer.getX(), innerGraphContainer.getY()));
+
+        g.setColour(findColour(ColourIds::analysisRightColourId));
+        g.strokePath(rightChannelFFTPath, juce::PathStrokeType(1.f));
+    }
+
+    // Plotting the EQ response curve
     g.setColour(juce::Colours::white);
     g.strokePath(responseCurve, juce::PathStrokeType(2.f));
 }
@@ -331,5 +381,27 @@ void GraphBackground::resized()
 
 void GraphBackground::parameterChanged(const juce::String& parameterID, float newValue)
 {
+    // Calling the repaint method every time a parameter is changed
+    repaint();
+}
+
+void GraphBackground::toggleAnalysisEnablement(bool enabled)
+{
+    shouldShowFFTAnalysis = enabled;
+}
+
+void GraphBackground::timerCallback()
+{
+    // Only if the analysis is enabled, process the new left and right channel paths
+    if (shouldShowFFTAnalysis)
+    {
+        auto fftBounds = innerGraphContainer.toFloat();
+        auto sampleRate = audioProcessor.getSampleRate();
+
+        leftPathProducer.process(fftBounds, sampleRate);
+        rightPathProducer.process(fftBounds, sampleRate);
+    }
+
+    // Repaint the component when the timer callback is called
     repaint();
 }

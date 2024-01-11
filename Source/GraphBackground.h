@@ -13,9 +13,11 @@
 
 #include "JuceHeader.h"
 #include "PluginProcessor.h"
+#include "AnalyserPath.h"
 
 class GraphBackground : public juce::Component,
-                        public juce::AudioProcessorValueTreeState::Listener
+                        public juce::AudioProcessorValueTreeState::Listener,
+                        public juce::Timer
 {
 public:
     
@@ -45,18 +47,30 @@ public:
     // Called when the component is resized, then updates all of the lines on the graph
     void resized () override;
 
+    // A listener method called when a parameter (which has a listener attached) is changed
     void parameterChanged(const juce::String& parameterID, float newValue) override;
+
+    // A method to toggle the analysis visuals on / off
+    void toggleAnalysisEnablement(bool enabled);
+
+    void timerCallback() override;
     
     // All colour IDs for the component
     enum ColourIds
     {
+        // All background and grid lines
         backgroundColourId = 0x2000000,
         freqLineColourId = 0x2000001,
         gainLineColourId = 0x2000002,
         gain0LineColourId = 0x2000003,
-        labelColourId = 0x2000004
+        labelColourId = 0x2000004,
+
+        // All analysis response lines
+        analysisLeftColourId = 0x2000005,
+        analysisRightColourId = 0x2000006,
     };
     
+    // The font height of all labels
     float const fontHeight = 15;
 
 private:
@@ -86,11 +100,23 @@ private:
     // Declaring the colour gradient component to draw lines with
     juce::ColourGradient _colourGradient;
 
+    // The response curve of the filter being applied
     juce::Path responseCurve;
 
+    // Getting a reference to the audio processor to help with plotting
+    // eq coeffs and getting various other attributes
     EQAudioProcessor& audioProcessor;
 
+    // The inner graph (displaying the main grids, response and analysis)
+    // within the border with all labels
     juce::Rectangle<int> innerGraphContainer;
+
+    // Default value set for showing the analysis
+    bool shouldShowFFTAnalysis = true;
+
+    // Declaring two paths for the left and right input channels
+    // to draw the analysis
+    AnalyserPath leftPathProducer, rightPathProducer;
 
     //==============================================================================
     

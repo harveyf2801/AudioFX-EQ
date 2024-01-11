@@ -13,8 +13,8 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "HighCutBand.h"
 #include "EQProcessor.h"
+#include "SingleChannelFifo.h"
 
 //==============================================================================
 
@@ -37,6 +37,7 @@ public:
 
     //==============================================================================
     
+    // Used to check what parameters have been changed and update audio processing parameters
     void parameterChanged(const juce::String& parameterID, float newValue) override;
 
     // Used to prepare any audio before playback
@@ -108,7 +109,16 @@ public:
     // Declaring the Audio Processor Value Tree State
     juce::AudioProcessorValueTreeState apvts;
 
-    EQProcessor _eqProcessor;
+    // Creating an eq processor which holds all the processing chain, IIR and filter coefficient objects
+    EQProcessor eqProcessor;
+
+    // Declaring BlockType name to be used for float audio buffer type
+    using BlockType = juce::AudioBuffer<float>;
+
+    // Creating single channel FIFO buffers for left and right
+    // to calculate the FFT parameters for displaying the analyser
+    SingleChannelFifo<BlockType> leftChannelFifo{ Channel::Left };
+    SingleChannelFifo<BlockType> rightChannelFifo{ Channel::Right };
 
 private:
     

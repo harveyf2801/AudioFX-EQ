@@ -664,12 +664,6 @@
     <ClCompile Include="..\..\Source\EQProcessor.cpp">
       <Filter>EQ\Source\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\FFTProcessor.cpp">
-      <Filter>EQ\Source\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\FIFO.cpp">
-      <Filter>EQ\Source\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\TDF2Biquad.cpp">
       <Filter>EQ\Source\Audio</Filter>
     </ClCompile>
@@ -681,6 +675,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\CutBandParameters.cpp">
       <Filter>EQ\Source\GUI\ParameterComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AnalyserPath.cpp">
+      <Filter>EQ\Source\GUI\EQComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AnalyserPathGenerator.cpp">
+      <Filter>EQ\Source\GUI\EQComponents</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\GraphBackground.cpp">
       <Filter>EQ\Source\GUI\EQComponents</Filter>
@@ -3267,10 +3267,13 @@
     <ClInclude Include="..\..\Source\EQProcessor.h">
       <Filter>EQ\Source\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\FFTProcessor.h">
+    <ClInclude Include="..\..\Source\FFTDataGenerator.h">
       <Filter>EQ\Source\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\FIFO.h">
+      <Filter>EQ\Source\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SingleChannelFifo.h">
       <Filter>EQ\Source\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\TDF2Biquad.h">
@@ -3284,6 +3287,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\CutBandParameters.h">
       <Filter>EQ\Source\GUI\ParameterComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AnalyserPath.h">
+      <Filter>EQ\Source\GUI\EQComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AnalyserPathGenerator.h">
+      <Filter>EQ\Source\GUI\EQComponents</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\GraphBackground.h">
       <Filter>EQ\Source\GUI\EQComponents</Filter>

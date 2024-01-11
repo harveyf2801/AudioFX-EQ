@@ -16,6 +16,7 @@
 #include "PeakBand.h"
 #include "HighShelfBand.h"
 #include "HighCutBand.h"
+#include "TDF2Biquad.h"
 
 //==============================================================================
 

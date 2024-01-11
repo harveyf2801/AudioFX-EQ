@@ -13,42 +13,36 @@
 
 //==============================================================================
 
-TDF2Biquad::TDF2Biquad(std::vector<float>& b, std::vector<float>& a)
-    : _b(b)
-    , _a(a)
+// Constructor that initializes the TDF2Biquad with given B and A coefficients
+
+TDF2Biquad::TDF2Biquad(juce::dsp::IIR::Coefficients<float>* coeffs)
+    : coefficients(coeffs)
 {
-    _s1, _s2 = 0, 0;
+    // Calculating the filter order
+    order = coefficients->getFilterOrder();
 }
 
-void TDF2Biquad::setCoefficients(std::vector<float>& newB, std::vector<float>& newA)
+// Method to process a single input sample through the filter
+float TDF2Biquad::processSample(float sample)
 {
+    // Getting the raw coefficient values
+    auto* c = coefficients->getRawCoefficients();
 
-    // Make sure coeffs a and b are equal in size (padding with zeros)
-    jassert(newA.size() == newB.size());
-    
-    // Ensure that a0 is not zero
-    jassert(newA[0] != 0.0f);
+    auto output = (c[0] * sample) + state[0];
 
-    _b = newB;
-    _a = newA;
+    // Filter computation using TDF2 structure
+    for (size_t j = 0; j < order - 1; ++j)
+        state[j] = (c[j + 1] * sample) - (c[order + j + 1] * output) + state[j + 1];
 
-    //_s1, _s2 = 0, 0;
+    state[order - 1] = (c[order] * sample) - (c[order * 2] * output);
+
+    return output;
 }
 
-float TDF2Biquad::processSample(float X)
-{
-    jassert(_b.size() == 3);
-    jassert(_a.size() == 3);
-
-    float Y = _b[0] * X + _s1;
-
-    _s1 = _b[1] * X - _a[1] * Y + _s2 ;
-    _s2 = _b[2] * X - _a[2] * Y;
-
-    return Y;
-}
-
+// Method to reset the filter's internal state
 void TDF2Biquad::reset()
 {
-    _s1, _s2 = 0, 0;
+    // Reset filter state variables
+    for (size_t i = 0; i < order; ++i)
+        state[i] = 0;
 }

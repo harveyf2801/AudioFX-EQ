@@ -35,11 +35,11 @@
         </GROUP>
         <FILE id="OcOFoa" name="EQProcessor.cpp" compile="1" resource="0" file="Source/EQProcessor.cpp"/>
         <FILE id="Pxhbc9" name="EQProcessor.h" compile="0" resource="0" file="Source/EQProcessor.h"/>
-        <FILE id="H4NH2n" name="FFTProcessor.cpp" compile="1" resource="0"
-              file="Source/FFTProcessor.cpp"/>
-        <FILE id="LKJK1X" name="FFTProcessor.h" compile="0" resource="0" file="Source/FFTProcessor.h"/>
-        <FILE id="A6QYP6" name="FIFO.cpp" compile="1" resource="0" file="Source/FIFO.cpp"/>
+        <FILE id="I4lkNB" name="FFTDataGenerator.h" compile="0" resource="0"
+              file="Source/FFTDataGenerator.h"/>
         <FILE id="pQuJMI" name="FIFO.h" compile="0" resource="0" file="Source/FIFO.h"/>
+        <FILE id="Vj9Dbc" name="SingleChannelFifo.h" compile="0" resource="0"
+              file="Source/SingleChannelFifo.h"/>
         <FILE id="WF9R9U" name="TDF2Biquad.cpp" compile="1" resource="0" file="Source/TDF2Biquad.cpp"/>
         <FILE id="hn0SVw" name="TDF2Biquad.h" compile="0" resource="0" file="Source/TDF2Biquad.h"/>
       </GROUP>
@@ -59,6 +59,13 @@
                 file="Source/CutBandParameters.h"/>
         </GROUP>
         <GROUP id="{8BF1CD9E-B587-2258-CFFA-4C86DC1C0BC2}" name="EQComponents">
+          <FILE id="tgNA9p" name="AnalyserPath.cpp" compile="1" resource="0"
+                file="Source/AnalyserPath.cpp"/>
+          <FILE id="rxXhgU" name="AnalyserPath.h" compile="0" resource="0" file="Source/AnalyserPath.h"/>
+          <FILE id="dbGPhV" name="AnalyserPathGenerator.cpp" compile="1" resource="0"
+                file="Source/AnalyserPathGenerator.cpp"/>
+          <FILE id="RlZmZc" name="AnalyserPathGenerator.h" compile="0" resource="0"
+                file="Source/AnalyserPathGenerator.h"/>
           <FILE id="DhqPFd" name="GraphBackground.cpp" compile="1" resource="0"
                 file="Source/GraphBackground.cpp"/>
           <FILE id="MM6EpT" name="GraphBackground.h" compile="0" resource="0"
