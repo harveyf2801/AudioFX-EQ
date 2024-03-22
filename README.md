@@ -4,9 +4,9 @@ This project implements an audio equalizer using JUCE (Jules' Utility Class Exte
 
 ## Using CMake
 
-### Configure Project
-
 > :warning: **CMake hasn't been updated since the last big update, therefore the project can instead be run and built using the ProJucer application.**
+
+### Configure Project
 
 Configure for Windows
 ```console
