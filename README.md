@@ -1,5 +1,7 @@
 # AudioFX - EQ
 
+
+
 ## Configure Project
 
 Configure for Windows
@@ -25,7 +27,7 @@ cd build
 cmake --build . -j 8
 ```
 
-## Refferences
+## References
 
 [JUCE Docs](https://docs.juce.com/)
 
