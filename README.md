@@ -33,7 +33,7 @@ cmake --build . -j 8
 
 - [JUCE Docs](https://docs.juce.com/)
 
-### EQ Audio Processing
+EQ Audio Processing:
 
 - [Audio EQ Cookbook](https://webaudio.github.io/Audio-EQ-Cookbook/audio-eq-cookbook.html)
 
@@ -43,7 +43,7 @@ cmake --build . -j 8
 
 - [Boost Single-writer/Single-reader FIFO Queue](https://www.boost.org/doc/libs/1_53_0/doc/html/boost/lockfree/spsc_queue.html)
 
-### GUI
+GUI:
 
 - [Spectrum Analyser JUCE Tutorial](https://docs.juce.com/master/tutorial_spectrum_analyser.html)
 
