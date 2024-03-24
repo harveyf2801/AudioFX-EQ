@@ -419,8 +419,8 @@ void GraphBackground::paint(juce::Graphics& g)
 {
     // Redrawing the image
     g.drawImage(background, getLocalBounds().toFloat());
-    //drawMagnitudeResponseCurve();
-    drawPhaseResponseCurve();
+    drawMagnitudeResponseCurve();
+    //drawPhaseResponseCurve();
 
     // Only plot the analysis lines if enabled
     if (shouldShowFFTAnalysis)
