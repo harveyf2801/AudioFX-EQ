@@ -7,9 +7,9 @@ This project implements an audio equalizer using JUCE (Jules' Utility Class Exte
 ### Completed
 
 - Custom DSP classes for each filter band.
-- Custom DSP class for Transposed Direct Form II biquad filter implementation *(still need to incorporate this into the main code)*.
+- Custom DSP class for Transposed Direct Form II biquad filter implementation *.
 - Visuals for the magnitude frequency reqponse.
-- Visuals for the phase frequency response *(still need to implement a toggle button to see the phase)*.
+- Visuals for the phase frequency response *.
 - Analyser line showing the magnitude of the input / output signal.
 
 ### To do
