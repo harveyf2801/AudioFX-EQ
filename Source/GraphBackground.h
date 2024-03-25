@@ -115,10 +115,10 @@ private:
     juce::Rectangle<int> innerGraphContainer;
 
     // Default value set for showing the analysis
-    bool shouldShowFFTAnalysis = false;
+    bool shouldShowFFTAnalysis = true;
 
     // Default value set for showing the phase response
-    bool shouldShowPhaseResponse = true;
+    bool shouldShowPhaseResponse = false;
 
     // Declaring two paths for the left and right input channels
     // to draw the analysis

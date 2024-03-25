@@ -79,7 +79,7 @@ EQAudioProcessorEditor::~EQAudioProcessorEditor()
 void EQAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (juce::Colours::dimgrey);//(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    g.fillAll((getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId)));
 }
 
 void EQAudioProcessorEditor::resized()

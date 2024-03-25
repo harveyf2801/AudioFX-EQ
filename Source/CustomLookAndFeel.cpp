@@ -16,6 +16,8 @@
 CustomLookAndFeel::CustomLookAndFeel()
     : juce::LookAndFeel_V4()
 {
+    setColour(juce::ResizableWindow::backgroundColourId, juce::Colours::dimgrey);
+
     setColour(juce::Slider::backgroundColourId, juce::Colours::transparentBlack);
     setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::white);
     setColour(juce::Slider::rotarySliderOutlineColourId, juce::Colours::black);
@@ -128,22 +130,22 @@ void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
     }
 
     // Draw both paths with curved and rounded edges ...
-    auto thumbColour = findColour(juce::Slider::rotarySliderFillColourId);
+    auto foreGColour = findColour(juce::Slider::trackColourId);
 
     if (slider.isMouseOverOrDragging())
     {
-        thumbColour = thumbColour.darker(0.5f);
+        foreGColour = foreGColour.darker(0.5f);
     }
 
-    g.setColour(findColour(juce::Slider::trackColourId));
+    g.setColour(findColour(juce::Slider::thumbColourId));
     g.strokePath(sliderBackground, juce::PathStrokeType(6.0f, juce::PathStrokeType::JointStyle::curved,
         juce::PathStrokeType::EndCapStyle::rounded));
 
-    g.setColour(thumbColour);
+    g.setColour(foreGColour);
     g.strokePath(sliderForeground, juce::PathStrokeType(2.0f, juce::PathStrokeType::JointStyle::curved,
         juce::PathStrokeType::EndCapStyle::rounded));
 
-    g.setColour(thumbColour);
+    g.setColour(findColour(juce::Slider::thumbColourId));
     g.fillPath(sliderThumb);
 }
 
