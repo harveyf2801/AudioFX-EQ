@@ -1,6 +1,6 @@
 # AudioFX - EQ
 
-[![cpp-linter](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml/badge.svg)](https://github.com/AudioFX-Compressor/.github/workflows/cpp-linter.yml)
+[![cpp-linter](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml/badge.svg)](https://github.com/AudioFX-EQ/.github/workflows/cpp-linter.yml)
 
 This project implements an audio equalizer using JUCE (Jules' Utility Class Extensions) and C++. By default, it includes 3 peaking bands, 2 shelves, and 2 cut bands for EQ processing. The peaking bands are dynamically implemented, allowing for easy adjustment of the number of bands by specifying the desired amount in the top of PluginProcessor.cpp. An all-pass filter band has been included in the project but has not been fully implemented in the GUI. All filter coefficients are calculated manually and applied using a Transposed Direct Form II BiQuad Filter. The Matlab directory provides a live script demonstrating some of the DSP techniques used in the project.
 
